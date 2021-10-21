@@ -36,10 +36,12 @@ UserLocation={
        
     }  
     
-    Login=(Cred)=>{
+    Login=async(Cred)=>{
 
-        agent.Account.Login(Cred).then(()=>{  this.GetuserToken(Cred.email,Cred.password)})
-      
+      agent.Account.Login(Cred).then(()=>{ this.GetuserToken(Cred.email,Cred.password)})
+       agent.Account.SayHello()
+      await axios.get('http://192.168.1.30:5003/api/Account/hello').then(res=>Alert.alert("Success")).catch(res=>Alert.alert("RequestFailed"))
+       axios.get('http://192.168.1.30:5003/api/Account/hello').then(res=>Alert.alert("Success")).catch(res=>Alert.alert("RequestFailed"))
         debugger
     }
 
@@ -65,7 +67,7 @@ UserLocation={
                 email:email,
                 password:pass
             }
-            var Token =  await agent.Account.GetToken(Cred)
+            var Token =  await agent.Account.GetToken(Cred).then(res=>Alert.alert("Success")).catch(res=>Alert.alert("RequestFailed"))
            
             this.token = Token.data.token    
             await AsyncStorage.setItem(PERSISTENCE_KEY,this.token)

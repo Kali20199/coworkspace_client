@@ -13,7 +13,7 @@ axios.interceptors.response.use(async(res)=>{
 },(error)=>{
     const {data,status} = error.response
     const message = error.response.message
-    Alert.alert("Access Token",message.toString())
+    Alert.alert("Failed",message.toString())
    
   
 })
@@ -24,8 +24,11 @@ axios.interceptors.request.use(async(request)=>{
     const token= await AsyncStorage.getItem(PERSISTENCE_KEY,(error)=>{})       
     Alert.alert("Access Token",token)
     request.headers.Authorization = `Bearer  ${token}` 
+ 
     return request
 
+},(error)=>{
+    Alert.alert("Error",error.data)
 })
 
 
