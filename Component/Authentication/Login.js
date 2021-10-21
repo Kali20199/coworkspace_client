@@ -53,7 +53,7 @@ function Login(props) {
 
   const Submit=()=>{
     UserStore.Login(Cred)
-    debugger
+   
   }
    
     return (
