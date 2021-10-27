@@ -71,7 +71,7 @@ const CoworkNav=()=>
     
         <Stack.Navigator >
       <Stack.Screen name="Login"  component={Login} options={HeaderBase("Login")}/>
-    <Stack.Screen name="Register" component={NavDrawer} options={{ headerShown: false }} />
+    <Stack.Screen name="Register" component={BtoomNav} options={{ headerShown: false }} />
       </Stack.Navigator>
     
     )

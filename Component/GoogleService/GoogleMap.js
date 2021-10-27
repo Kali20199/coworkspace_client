@@ -28,7 +28,7 @@ const LocationPermmision =async(props)=>{
       })
 
      
-       const Loc = await RNLocation.getLatestLocation({timeout: 100})
+       const Loc = await RNLocation.getLatestLocation()
       
 
   
@@ -57,7 +57,7 @@ const GoogleMap=()=> {
     useEffect(async()=>{
       const Loc = await  LocationPermmision(UserStore)
       setLoc(Loc)
-     debugger
+   
     //  const latlan = `${Loc.coords.latitude}${Loc.coords.longitude}`
      
      
