@@ -11,7 +11,8 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import GoogleMap from '../../Component/GoogleService/GoogleMap'
 import Login from '../../Component/Authentication/Login'
-
+import {App_Name} from '../../constant/Application'
+import WorkSpacemene from './../screens/WorkSpacemene';
 
 enableScreens()
 
@@ -52,7 +53,7 @@ function BtoomNav() {
     return (
       <Tab.Navigator  >
      
-         <Tab.Screen   name="Registers" component={Login}  options={HeaderBase("","person-add-outline"),{headerShown:false}}  />
+         <Tab.Screen   name={App_Name} component={WorkSpacemene}  options={HeaderBase("","person-add-outline"),{headerShown:true}}  />
 
         <Tab.Screen    name="Map" component={GoogleMap}   options={{ tabBarBadge: 3,...HeaderBase("sss","map-outline") }} />
         <Tab.Screen name="Settings" component={NavDrawer}  options={HeaderBase("s","home"),{headerShown:false}}  />
