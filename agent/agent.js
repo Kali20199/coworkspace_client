@@ -22,6 +22,7 @@ axios.interceptors.response.use(async(res)=>{
 axios.interceptors.request.use(async(request)=>{
     //const UserStore =store.UserStore
     const token= await AsyncStorage.getItem(PERSISTENCE_KEY,(error)=>{})       
+
     Alert.alert("Access Token",token)
     request.headers.Authorization = `Bearer  ${token}` 
  
