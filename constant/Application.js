@@ -3,11 +3,12 @@ export const App_Name = "LightSpace"
 
 
 class WorkSpace{
-    constructor(id,name,imageurl,tables){
+    constructor(id,name,imageurl,tables,open=true){
         this.id = id;
         this.name = name;
         this.tables = tables;
         this.imageurl = imageurl;
+        this.open = open;
     }
 }
 

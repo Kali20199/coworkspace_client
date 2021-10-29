@@ -9,7 +9,7 @@ export const PERSISTENCE_KEY = 'UserToekn'
 
 export default class UserStore{
  Creds = {  
-userName:null, 
+userName:'Mostafa', 
 email:null,
 password:null,
 city:null,
