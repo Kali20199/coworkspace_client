@@ -12,7 +12,7 @@ export default class CoWorkStore{
     name='Ink'
     phone=null
     tables=0
-    city=null
+    city='Alexamdria'
     id=null
     imageurl=''
 

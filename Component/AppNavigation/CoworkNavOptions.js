@@ -62,7 +62,7 @@ function BtoomNav() {
     return (
       <Tab.Navigator  >  
          <Tab.Screen   name={App_Name} component={WorkSpaceList}  options={{headerShown:true  ,...HeaderBase(App_Name,"person-add-outline") } }  />
-        <Tab.Screen    name="Map" component={GoogleMap}   options={{ tabBarBadge: 3,...HeaderBase("sss","map-outline") }} />
+        <Tab.Screen    name="Map" component={GoogleMap}   options={{ tabBarBadge: 3,...HeaderBase("Map","map-outline") }} />
         <Tab.Screen name="Settings" component={NavDrawer}  options={HeaderBase("s","home"),{headerShown:false}}  />
        
       </Tab.Navigator>

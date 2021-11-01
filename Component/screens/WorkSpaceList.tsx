@@ -1,10 +1,15 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { View,Text,FlatList,Image,TouchableOpacity } from 'react-native';
 import { Work } from '../../constant/Application';
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { observer } from 'mobx-react-lite';
 import { store } from '../../store/store';
+import Searchbar from '../Widgets/serchBar'
+
+
+
+
 
 
 
@@ -16,6 +21,7 @@ const LightSpaceListItem=(props)=>{
     return (
         
          <View style={style.list}>
+        
              <TouchableOpacity style={style.item_container} onPress={()=>{
                  CoWorkStore.setWorkSpaceOptions(name,id,imageurl,tables)
                  props.nav.navigate('Ink')}}>
@@ -41,13 +47,43 @@ const LightSpaceListItem=(props)=>{
 
 
 function WorkSpacemene(props) {
+    
+
+
+    const [value,setValue] = useState('')
+    const [sortArr,setSortedArr] = useState([])
+
+
+    useEffect(()=>{
+        setSortedArr(Work)
+    },[])
+
+    const ChangeHandler=(event)=>{
+     const {text} = event.nativeEvent
+     
+     setValue(text)
+
+   
+     value == "" ?  setSortedArr(Work) :   setSortedArr([])
+     const arr = []
+      Work.map((index)=>{
+         if(index.name.toUpperCase().includes(text.toUpperCase()))
+
+         {arr.push(index)}
+     })
+     setSortedArr(arr)
+     const x =3;
+    }
+   
+   
+   
    
     return (
         <View>
-          <View>
-          
+          <View style={style.serbarView}>
+          <Searchbar value={value} ChangeHandler={ChangeHandler}  />
           </View>
-            <FlatList numColumns={2} data={Work} keyExtractor={item=>item.id} renderItem={item=>  <LightSpaceListItem item={item} nav={props.navigation}/>} />
+            <FlatList numColumns={1} data={sortArr} keyExtractor={item=>item.id} renderItem={item=>  <LightSpaceListItem item={item} nav={props.navigation}/>} />
         </View>
     )
 }
@@ -55,12 +91,20 @@ function WorkSpacemene(props) {
 
 
 const style = StyleSheet.create({
+
+    serbarView:{
+    flexDirection:'row',
+    justifyContent:'center',
+    width:'100%'
+  
+   },
+
     list:{
       flexDirection:'row',
       alignItems:'center',
       justifyContent:'center',
-      width:'65%',
-      marginLeft:-35,
+      width:'95%',
+    
      
       
     },
@@ -73,7 +117,7 @@ const style = StyleSheet.create({
         flexDirection:'row',
         justifyContent:'center',
         alignContent:'center',
-        width:'70%',
+        width:'90%',
         shadowColor: 'black',
         shadowOpacity: 0.26,
         shadowOffset: { width: 0, height: 2 },

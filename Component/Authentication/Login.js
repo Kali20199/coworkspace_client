@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-
 import { useStore } from '../../store/store';
 import { observer } from 'mobx-react-lite';
 import axios from 'axios'
 import { Platform,Alert, View,Text, StyleSheet,ViewStyle,TextStyle,TextInput, Button } from 'react-native';
-
+import LottieView from 'lottie-react-native'
 import Color from '../../constant/Color'
+import { ScrollView } from 'react-native-gesture-handler';
+import PushNotification from 'react-native-push-notification'
 // import axios from 'react-native-axios'
 function Login(props) {
 
@@ -16,8 +17,11 @@ function Login(props) {
 
    const [Messgae,setMessage] = useState()
    const {UserStore} = useStore()
-  useEffect(()=>{
 
+
+  useEffect(()=>{
+   // CreateChannel();
+  
  
    const  FetchData =async()=>
   {
@@ -55,10 +59,14 @@ function Login(props) {
     UserStore.Login(Cred)
    
   }
+
    
     return (
+      <ScrollView>
      <View style={style.Page}>
+           <LottieView style={style.app} source={require('../../Lottie/3520-light-bulb.json')} autoPlay loop/>
       <View style={style.container}> 
+
       <TextInput onChange={handleInput} nativeID='email' placeholder={'Email'} style={style.Input} />
       <TextInput onChange={handleInput} nativeID='password' placeholder={'Password'}   style={style.Input}  />
       <View style={style.BT}>
@@ -69,6 +77,7 @@ function Login(props) {
       </View>
     </View>
     </View>
+    </ScrollView>
       
     )
 }
@@ -77,12 +86,20 @@ function Login(props) {
 
 export const style=StyleSheet.create({
   Page:{
-    
+
     
   },
+  app:{
 
+    height:250,
+    flexDirection:'row',
+    width:'100%',
+    justifyContent:'center',
+    zIndex:-1
+
+},
   container:{
-    height:'100%',
+   
     justifyContent:'center',
     width:'70%',
     marginLeft: 'auto',

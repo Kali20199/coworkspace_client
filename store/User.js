@@ -8,7 +8,7 @@ import 'react-native-gesture-handler';
 export const PERSISTENCE_KEY = 'UserToekn'
 
 export default class UserStore{
- Creds = {  
+Creds = {  
 userName:'Mostafa', 
 email:null,
 password:null,
