@@ -45,33 +45,46 @@ const LocationPermmision =async(props)=>{
 }
 
 
+const Fetch =async()=>{
+  const allLocation =await CoWorkStore.getSpaceAround() 
 
+}
 
 
 const GoogleMap=()=> {
 
-    const {UserStore} = useStore()
+    const {UserStore,CoWorkStore:{getSpaceAround,location}} = useStore()
     const [loc,setLoc] = useState()
   
 
     useEffect(async()=>{
       const Loc = await  LocationPermmision(UserStore)
       setLoc(Loc)
-   
+      await getSpaceAround() 
+    
+      
     //  const latlan = `${Loc.coords.latitude}${Loc.coords.longitude}`
      
      
      },[])
          
 
-
+ const  Markers=()=>{
+  
+  return (
+  <Marker 
+   coordinate={{latitude: loc.latitude,longitude: loc.longitude}}  
+   title={'Current Location'} 
+   />
+  )
+  }
    
  
   
-    return (
+  return (
    
       <View style={styles.container}>
-      {loc  ?
+      {loc ?
             <MapView
         style={styles.map}
         provider={PROVIDER_GOOGLE}
@@ -82,11 +95,9 @@ const GoogleMap=()=> {
           longitudeDelta: 0.0421,
         }}
       >
-       <Marker 
-        coordinate={{latitude: loc.latitude,longitude: loc.longitude}}  
-        title={'Current Location'} 
-        /> 
-
+        {location!==undefined ?
+         Markers()
+        :null}
       
     
       </MapView>
