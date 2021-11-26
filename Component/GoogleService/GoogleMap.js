@@ -71,12 +71,20 @@ const GoogleMap=()=> {
 
  const  Markers=()=>{
   
-  return (
-  <Marker 
-   coordinate={{latitude: loc.latitude,longitude: loc.longitude}}  
+
+ 
+ return location.map(location=>{
+   
+   const lat =  parseFloat(location.latitude)
+   const long =parseFloat(location.longitude) 
+return(
+   <Marker 
+   coordinate={{latitude: lat,longitude: long}}  
    title={'Current Location'} 
-   />
-  )
+   />)
+  })
+
+  
   }
    
  

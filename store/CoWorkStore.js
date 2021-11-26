@@ -4,7 +4,7 @@ import agent from '../agent/agent'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 import 'react-native-gesture-handler';
-
+import {GeoLocation} from '../Component/Models/Models' 
 
 
 export default class CoWorkStore{
@@ -15,6 +15,8 @@ export default class CoWorkStore{
     city='Alexamdria'
     id=null
     imageurl=''
+    location =  undefined
+
 
 
     constructor()
@@ -32,6 +34,32 @@ export default class CoWorkStore{
             this.imageurl = imageurl,
             this.tables = tables
         })
+    }
+
+
+    getSpaceAround=async()=>{
+   
+        runInAction(async()=>{
+            try{
+          var X =  await agent.WorkSpace.FetchAllSpaceAround().then(res=>{
+              this.location = res.data
+          })
+            
+      
+
+            }catch(e){
+             var x= e
+
+           
+
+
+
+          }
+        }
+          )
+   
+        
+        
     }
          
     
