@@ -1,11 +1,11 @@
 import Color from "../../constant/Color"
 import React from "react"
 import {StyleSheet,Text} from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons';
+
 import { observer } from 'mobx-react-lite';
 import { enableScreens } from 'react-native-screens';
 import Register from '../../Component/Authentication/Register'
-
+import FeatherIcon from 'react-native-vector-icons/Feather'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -31,7 +31,7 @@ const Tab = createBottomTabNavigator();
     headerTintColor: 'white',
     headerStyle: { backgroundColor: Color.tomato },
     headerCenter:()=><Text  style={style.Text}>{Title}</Text>,
-    tabBarIcon: ()=> <Ionicons name={icon} size={20} color={'gray'} />,
+     tabBarIcon: ()=> <FeatherIcon  name={icon} size={20} />,
     headerTitle:()=><Text  style={style.Text}>{Title}</Text>,
  }
 return Header
@@ -61,9 +61,9 @@ function BtoomNav() {
     // Ohter Screen When Login
     return (
       <Tab.Navigator  >  
-         <Tab.Screen   name={App_Name} component={WorkSpaceList}  options={{headerShown:true  ,...HeaderBase(App_Name,"person-add-outline") } }  />
-        <Tab.Screen    name="Map" component={GoogleMap}   options={{ tabBarBadge: 3,...HeaderBase("Map","map-outline") }} />
-        <Tab.Screen name="Settings" component={NavDrawer}  options={HeaderBase("s","home"),{headerShown:false}}  />
+         <Tab.Screen   name={App_Name} component={WorkSpaceList}  options={{headerShown:true  ,...HeaderBase(App_Name,"home") } }  />
+        <Tab.Screen    name="Map" component={GoogleMap}   options={{ tabBarBadge: 3,...HeaderBase("Map","map") }} />
+        <Tab.Screen name="Settings" component={NavDrawer}  options={{headerShown:false,valueOf,...HeaderBase("s","settings")}}  />
        
       </Tab.Navigator>
     );
