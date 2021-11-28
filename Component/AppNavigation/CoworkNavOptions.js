@@ -1,11 +1,11 @@
 import Color from "../../constant/Color"
 import React from "react"
 import {StyleSheet,Text} from 'react-native'
-
 import { observer } from 'mobx-react-lite';
 import { enableScreens } from 'react-native-screens';
 import Register from '../../Component/Authentication/Register'
-import FeatherIcon from 'react-native-vector-icons/Feather'
+import MaterialCommunityIcons from 'react-native-vector-icons/Feather'
+import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import {createNativeStackNavigator} from '@react-navigation/native-stack'
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs'
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -14,7 +14,7 @@ import Login from '../../Component/Authentication/Login'
 import {App_Name} from '../../constant/Application'
 import WorkSpaceList from '../screens/WorkSpaceList';
 import { useStore } from "../../store/store";
-
+import { mdiAccountCircle } from '@mdi/js';
 import WorkSpaceDetails from './../screens/WorkSpaceDetails';
 
 enableScreens()
@@ -31,8 +31,9 @@ const Tab = createBottomTabNavigator();
     headerTintColor: 'white',
     headerStyle: { backgroundColor: Color.tomato },
     headerCenter:()=><Text  style={style.Text}>{Title}</Text>,
-     tabBarIcon: ()=> <FeatherIcon  name={icon} size={20} />,
+    tabBarIcon: ()=> <MaterialCommunityIcons  name={icon} size={20} color='black' />,
     headerTitle:()=><Text  style={style.Text}>{Title}</Text>,
+    drawerIcon:()=> <MaterialCommunityIcons  name={icon} size={20}  color='black'/> 
  }
 return Header
 }
@@ -42,9 +43,10 @@ return Header
 function NavDrawer(){
     return(
     <Drawer.Navigator initialRouteName="CoworkSpaces" >
-        <Drawer.Screen name="CoworkSpace" component={Register}   options={HeaderBase("","person-add-outline") }/>
-      <Drawer.Screen name="Setting" component={Register}   options={HeaderBase("","person-add-outline") }/>
-      <Drawer.Screen name="GoogleMap" component={GoogleMap}  options={HeaderBase("","person-add-outline") } />
+     
+        <Drawer.Screen name="MyProfile" component={Register}   options={HeaderBase("","user")}/>
+      <Drawer.Screen name="App Setting" component={Register}   options={HeaderBase("","log-out") }/>
+      <Drawer.Screen name="Logout" component={GoogleMap}  options={HeaderBase("","settings") } />
       
       
     </Drawer.Navigator>
@@ -62,8 +64,8 @@ function BtoomNav() {
     return (
       <Tab.Navigator  >  
          <Tab.Screen   name={App_Name} component={WorkSpaceList}  options={{headerShown:true  ,...HeaderBase(App_Name,"home") } }  />
-        <Tab.Screen    name="Map" component={GoogleMap}   options={{ tabBarBadge: 3,...HeaderBase("Map","map") }} />
-        <Tab.Screen name="Settings" component={NavDrawer}  options={{headerShown:false,valueOf,...HeaderBase("s","settings")}}  />
+        <Tab.Screen    name="Map" component={GoogleMap}   options={{ ...HeaderBase("Map","map") }} />
+        <Tab.Screen name="Settings" component={NavDrawer}  options={{headerShown:false,tabBarBadge: 3,valueOf,...HeaderBase("Settings","settings")}}  />
        
       </Tab.Navigator>
     );
