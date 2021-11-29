@@ -104,7 +104,14 @@ return(
         }}
       >
         {location!==undefined ?
-         Markers()
+        <>
+          <Marker 
+          coordinate={{latitude: loc.latitude,longitude: loc.longitude}}  
+          title={'Current Location'} 
+          />
+        { Markers()}
+         </>
+         
         :null}
       
     

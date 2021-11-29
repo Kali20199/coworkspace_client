@@ -16,7 +16,8 @@ import WorkSpaceList from '../screens/WorkSpaceList';
 import { useStore } from "../../store/store";
 import { mdiAccountCircle } from '@mdi/js';
 import WorkSpaceDetails from './../screens/WorkSpaceDetails';
-
+import AppSettings from  '../Settings/AppSettings'
+import MyProfile from  '../Settings/MyProfile'
 enableScreens()
 
 const Drawer = createDrawerNavigator()
@@ -44,8 +45,8 @@ function NavDrawer(){
     return(
     <Drawer.Navigator initialRouteName="CoworkSpaces" >
      
-        <Drawer.Screen name="MyProfile" component={Register}   options={HeaderBase("","user")}/>
-      <Drawer.Screen name="App Setting" component={Register}   options={HeaderBase("","log-out") }/>
+        <Drawer.Screen name="MyProfile" component={MyProfile}   options={HeaderBase("","user")}/>
+      <Drawer.Screen name="App Setting" component={AppSettings}   options={HeaderBase("","log-out") }/>
       <Drawer.Screen name="Logout" component={GoogleMap}  options={HeaderBase("","settings") } />
       
       
