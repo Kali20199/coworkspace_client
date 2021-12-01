@@ -12,7 +12,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import GoogleMap from '../../Component/GoogleService/GoogleMap'
 import Login from '../../Component/Authentication/Login'
 import {App_Name} from '../../constant/Application'
-import WorkSpaceList from '../screens/WorkSpaceList';
+import WorkSpaceListView from '../screens/WorkSpaceListView';
 import { useStore } from "../../store/store";
 import { mdiAccountCircle } from '@mdi/js';
 import WorkSpaceDetails from './../screens/WorkSpaceDetails';
@@ -45,7 +45,7 @@ function NavDrawer(){
     return(
     <Drawer.Navigator initialRouteName="CoworkSpaces" >
      
-        <Drawer.Screen name="MyProfile" component={MyProfile}   options={HeaderBase("","user")}/>
+        <Drawer.Screen name="MyProfile" component={MyProfile}   options={{headerShown:false,...HeaderBase("","user")}}/>
       <Drawer.Screen name="App Setting" component={AppSettings}   options={HeaderBase("","log-out") }/>
       <Drawer.Screen name="Logout" component={GoogleMap}  options={HeaderBase("","settings") } />
       
@@ -64,7 +64,7 @@ function BtoomNav() {
     // Ohter Screen When Login
     return (
       <Tab.Navigator  >  
-         <Tab.Screen   name={App_Name} component={WorkSpaceList}  options={{headerShown:true  ,...HeaderBase(App_Name,"home") } }  />
+         <Tab.Screen   name={App_Name} component={WorkSpaceListView}  options={{headerShown:true  ,...HeaderBase(App_Name,"home") } }  />
         <Tab.Screen    name="Map" component={GoogleMap}   options={{ ...HeaderBase("Map","map") }} />
         <Tab.Screen name="Settings" component={NavDrawer}  options={{headerShown:false,tabBarBadge: 3,valueOf,...HeaderBase("Settings","settings")}}  />
        

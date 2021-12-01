@@ -4,6 +4,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { Avatar, Button, Dialog, Portal, Provider, Paragraph, Card, Title } from 'react-native-paper';
 import MaterialCommunityIcons from 'react-native-vector-icons/Feather'
 const windowheight = Dimensions.get('window').height;
+import { Tab,TabView } from 'react-native-elements';
 function MyProfile() {
     const [visible, setVisible] = React.useState(false);
     const [imageDialog, setimageDialog] = React.useState(false);
@@ -28,9 +29,12 @@ function MyProfile() {
        )
    }
 
-
+ 
+  const [index, setIndex] = React.useState(0);
 
     return (
+    
+    
         <Provider>
             <ScrollView>
                 <View style={{ padding: 20 }}>
@@ -55,7 +59,7 @@ function MyProfile() {
                                 <Text style={styles.info}>Email : mostafaihab2019@gmail.com</Text>
                             </Title>
                             <Card.Content>
-                                <Button color={'red'} onPress={hideDialog}>Edit</Button>
+                           
                             </Card.Content>
                         </Card>
                         <Card style={styles.prsoninfo}>

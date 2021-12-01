@@ -44,6 +44,8 @@ export default class CoWorkStore{
           var X =  await agent.WorkSpace.FetchAllSpaceAround().then(res=>{
               this.location = res.data
           })
+
+          var Data = loc
             
       
 

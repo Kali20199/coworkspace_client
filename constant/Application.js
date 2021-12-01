@@ -18,7 +18,7 @@ export const Work = [
     
     new WorkSpace (
         id='4j23k4235',
-        name='Mena Labs',
+        name='O Space',
         imageurl='https://picture.liquidspace.com/Index?emptyImageUrl=https%3A%2F%2Fliquidspace.com%2FContent%2FImages%2Fliquid-holder.jpg&etag=D3UVYAVCkRSmLr12mMjzwQ%3D%3D&crop=true&aux=6plEuLk%2F6w7xPeukpsvW5Th51xjJ05Fe3wOPNdjA%2B7iNVDWoIPutc%2FcsVi329yobumNdGd70unUcFXbWKkm6tg%3D%3D',
         tables='12'
     ),
@@ -37,7 +37,7 @@ export const Work = [
     ),
     new WorkSpace(
         id='2j23h4235',
-        name='BestSpace ',
+        name='BlankSpace',
         imageurl='https://images.squarespace-cdn.com/content/v1/57333f3b044262e0b7ab43a3/1591797552694-7FMLLXF7Y6DZ17J2E3C6/4.jpg?format=1000w',
         tables='23',
         tables='12'

@@ -8,7 +8,8 @@ import { useStore } from '../../store/store'
 import { observer } from 'mobx-react-lite'
 import Geolocation from '@react-native-community/geolocation';
 import RNLocation  from 'react-native-location'
-
+import MARKER from '../../assets/marker.png'
+import { Work } from '../../constant/Application';
 const LocationPermmision =async(props)=>{
   
   const gtanted =await PermissionsAndroid.request(
@@ -45,15 +46,11 @@ const LocationPermmision =async(props)=>{
 }
 
 
-const Fetch =async()=>{
-  const allLocation =await CoWorkStore.getSpaceAround() 
-
-}
 
 
-const GoogleMap=()=> {
-
-    const {UserStore,CoWorkStore:{getSpaceAround,location}} = useStore()
+const GoogleMap=(props)=> {
+ 
+    const {UserStore,CoWorkStore:{getSpaceAround,location,setWorkSpaceOptions}} = useStore()
     const [loc,setLoc] = useState()
   
 
@@ -70,18 +67,29 @@ const GoogleMap=()=> {
          
 
  const  Markers=()=>{
-  
+   
 
  
  return location.map(location=>{
    
    const lat =  parseFloat(location.latitude)
-   const long =parseFloat(location.longitude) 
-return(
-   <Marker 
+   const long =parseFloat(location.longitude)  
+return(   
+   <Marker  
+   
+   onPress={()=>{
+    const {name,id,imageurl,tables}  =  Work.find((element)=>element.name===location.spaceName)  
+    
+   setWorkSpaceOptions(name,id,imageurl,tables) 
+   props.navigation.navigate('Ink')
+  }}
+   pinColor={'orange'}
    coordinate={{latitude: lat,longitude: long}}  
    title={'Current Location'} 
-   />)
+   >
+   <Text>{location.spaceName}</Text>
+          <Image source={MARKER} style={{marginTop:16, height: 33, width: 21}}/>
+   </Marker>)
   })
 
   
@@ -97,8 +105,10 @@ return(
         style={styles.map}
         provider={PROVIDER_GOOGLE}
         initialRegion={{
-          latitude: loc.latitude,
-          longitude:loc.longitude,
+          //loc.latitdude,
+          //loc.longitude,
+          latitude:31.227904,
+          longitude:29.9565056,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
@@ -106,9 +116,14 @@ return(
         {location!==undefined ?
         <>
           <Marker 
+          style={{height:90,width:90}}
+          pinColor={'red'}
           coordinate={{latitude: loc.latitude,longitude: loc.longitude}}  
           title={'Current Location'} 
-          />
+          >
+             
+        
+          </Marker>
         { Markers()}
          </>
          
