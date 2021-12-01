@@ -76,21 +76,17 @@ const GoogleMap=(props)=> {
    const long =parseFloat(location.longitude)  
 return(   
    <Marker  
-   
    onPress={()=>{
     const {name,id,imageurl,tables}  =  Work.find((element)=>element.name===location.spaceName)  
-    
    setWorkSpaceOptions(name,id,imageurl,tables) 
    props.navigation.navigate('Ink')
   }}
    pinColor={'orange'}
    coordinate={{latitude: lat,longitude: long}}  
-   title={'Current Location'} 
-   >
-   <Text>{location.spaceName}</Text>
-          <Image source={MARKER} style={{marginTop:16, height: 33, width: 21}}/>
-   </Marker>)
-  })
+   title={location.spaceName} 
+   />
+  ) 
+  }) 
 
   
   }
