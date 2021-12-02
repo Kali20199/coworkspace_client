@@ -18,6 +18,9 @@ import { mdiAccountCircle } from '@mdi/js';
 import WorkSpaceDetails from './../screens/WorkSpaceDetails';
 import AppSettings from  '../Settings/AppSettings'
 import MyProfile from  '../Settings/MyProfile'
+
+
+
 enableScreens()
 
 const Drawer = createDrawerNavigator()
@@ -83,10 +86,9 @@ const CoworkNav=()=>
         <Stack.Navigator >
       <Stack.Screen name="Login"  component={Login} options={HeaderBase("Login")}/>
     <Stack.Screen name="Register" component={BtoomNav} options={{ headerShown: false }} />
-
-     {/* All Other Application Shared Screen Screen */}
-
-    <Stack.Screen name={'Ink'} component={WorkSpaceDetails}  options={HeaderBase(CoWorkStore.name)}/>
+    <Stack.Screen name={'Ink'} component={WorkSpaceDetails}  options={{
+       
+      ...HeaderBase(CoWorkStore.name)}}/>
 
 
 
