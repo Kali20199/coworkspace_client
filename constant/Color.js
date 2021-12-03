@@ -1,7 +1,8 @@
 export default {
     primary: '#C2185B',
     accent: '#FFC107',
-    tomato:'tomato'
+    tomato:'tomato',
+    Facebook: '#3b5998'
 };
 
 

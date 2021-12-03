@@ -6,102 +6,127 @@ import 'react-native-gesture-handler';
 
 
 export const PERSISTENCE_KEY = 'UserToekn'
+export const PROFILEPIC_KEY = 'PROFILEPIC_KEY'
 
-export default class UserStore{
-Creds = {  
-userName:'Mostafa', 
-email:null,
-password:null,
-city:null,
-phone:null,
-
- }
-loading=false 
-token=null
-UserLocation={
-    latitude: 0,
-    longitude:0,
-    latitudeDelta: 0,
-    longitudeDelta: 0,
-  
-    
-}
+export default class UserStore {
+    Creds = {
+        userName: 'Mostafa',
+        email: null,
+        password: null,
+        city: null,
+        phone: null,
 
 
+    }
+    loading = false
+    token = null
+    ProfilePic =  null
+    UserLocation = {
+        latitude: 0,
+        longitude: 0,
+        latitudeDelta: 0,
+        longitudeDelta: 0,
 
-   
 
-
-    constructor()
-    {
-        makeAutoObservable(this)
-       
-    }  
-    
-    Login=(Cred)=>{
-
-      agent.Account.Login(Cred).then(()=>{ this.GetuserToken(Cred.email,Cred.password)})
-      agent.Account.SayHello()
-     
-     
     }
 
-    Register=async(Cred)=>{
 
-        runInAction(async()=>{
-          this.loading=true      
-          const  password = Cred.password.toString()
-          debugger
-        //  await agent.Account.Register(Cred)
-          this.loading=false
-       
-          this.GetuserToken(Cred.email,password)
-      
+
+
+
+
+    constructor() {
+        makeAutoObservable(this)
+
+    }
+
+    Login = (Cred) => {
+
+        agent.Account.Login(Cred).then(() => { this.GetuserToken(Cred.email, Cred.password) })
+        agent.Account.SayHello()
+
+
+    }
+
+    Register = async (Cred) => {
+
+        runInAction(async () => {
+            this.loading = true
+            const password = Cred.password.toString()
+            debugger
+            //  await agent.Account.Register(Cred)
+            this.loading = false
+
+            this.GetuserToken(Cred.email, password)
+
         })
     }
 
 
-    GetuserToken=async(email,pass)=>
-    {
-        runInAction(async()=>{
-            Cred={
-                email:email,
-                password:pass
+    GetuserToken = async (email, pass) => {
+        runInAction(async () => {
+            Cred = {
+                email: email,
+                password: pass
             }
-            var Token =  await agent.Account.GetToken(Cred)
-           
-            this.token = Token.data.token    
-            await AsyncStorage.setItem(PERSISTENCE_KEY,this.token)
-        var token= await AsyncStorage.getItem(PERSISTENCE_KEY,(error)=>{})       
-        this.loading = true   
-        this.loading=false 
-        if(!token)  {      
-         
-           
-            
-        }
-        
-     //   this.token = JSON.parse(token)
-        this.token = Token.data.token
-        return this.token
-       
-    })
+            var Token = await agent.Account.GetToken(Cred)
+
+            this.token = Token.data.token
+            await AsyncStorage.setItem(PERSISTENCE_KEY, this.token)
+            var token = await AsyncStorage.getItem(PERSISTENCE_KEY, (error) => { })
+            this.loading = true
+            this.loading = false
+            if (!token) {
+
+
+
+            }
+
+            //   this.token = JSON.parse(token)
+            this.token = Token.data.token
+            return this.token
+
+        })
     }
 
 
-    SayHello=async()=>{
+    SayHello = async () => {
         await agent.Account.SayHello()
     }
 
 
-    setLocation=(loc)=>{
+    setLocation = (loc) => {
 
-        runInAction(()=>{
+        runInAction(() => {
             this.UserLocation = loc
         })
     }
+    ChangeImage = async (image) => {
 
-    
+        runInAction(async () => {
+            this.ProfilePic = image
             
-    
+            await AsyncStorage.setItem(PROFILEPIC_KEY, JSON.stringify(this.ProfilePic)).catch((err)=>{
+
+                Alert.alert(err)
+            })
+
+            
+        }, [])
+    }
+
+    GetImagPice = async () => {
+        runInAction(async () => {
+
+            this.ProfilePic =JSON.parse(await AsyncStorage.getItem(PROFILEPIC_KEY))  
+            const X =3;
+          
+        }, [])
+
+        return this.ProfilePic
+    }
+
+
+
+
 }

@@ -13,7 +13,7 @@ axios.interceptors.response.use(async(res)=>{
 },(error)=>{
     const {data,status} = error.response
     const message = error.response.message
-    Alert.alert("Failed",message.toString())
+  //  Alert.alert("Failed",message.toString())
    
   
 })
@@ -25,11 +25,17 @@ axios.interceptors.request.use(async(request)=>{
 
   //  Alert.alert("Access Token",token)
     request.headers.Authorization = `Bearer  ${token}` 
- 
+      
     return request
 
 },(error)=>{
-    Alert.alert("Error",error.data)
+ 
+    switch(error.response.status){
+        case 401:
+            Alert.alert("You Need to Be Loged In to use This App")
+
+        default : return   Alert.alert("App Error")
+    }
 })
 
 
@@ -37,7 +43,8 @@ const Account = {
     Register:(Creds)=> {axios.post('/Account/register',Creds)},    
     GetToken:(Creds)=> axios.post('/Account/GetUser',Creds) ,
     SayHello:()=>axios.get('/Account/hello'),
-    Login:(Cred)=>axios.post('/Account/login',Cred)
+    Login:(Cred)=>axios.post('/Account/login',Cred),
+    UploadProfilePic:(image)=>axios.post('/Account/UploadImage',image)
     
     
 

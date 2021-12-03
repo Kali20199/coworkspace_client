@@ -33,7 +33,7 @@ const Tab = createBottomTabNavigator();
    const Header={
      
     headerTintColor: 'white',
-    headerStyle: { backgroundColor: Color.tomato },
+    headerStyle: { backgroundColor: Color.primary },
     headerCenter:()=><Text  style={style.Text}>{Title}</Text>,
     tabBarIcon: ()=> <MaterialCommunityIcons  name={icon} size={20} color='black' />,
     headerTitle:()=><Text  style={style.Text}>{Title}</Text>,
@@ -48,9 +48,9 @@ function NavDrawer(){
     return(
     <Drawer.Navigator initialRouteName="CoworkSpaces" >
      
-        <Drawer.Screen name="MyProfile" component={MyProfile}   options={{headerShown:false,...HeaderBase("","user")}}/>
-      <Drawer.Screen name="App Setting" component={AppSettings}   options={HeaderBase("","log-out") }/>
-      <Drawer.Screen name="Logout" component={GoogleMap}  options={HeaderBase("","settings") } />
+        <Drawer.Screen name="MyProfile" component={MyProfile}   options={{...HeaderBase("MyProfile","user")}}/>
+      <Drawer.Screen name="App Setting" component={AppSettings}   options={HeaderBase("App Setting","log-out") }/>
+      <Drawer.Screen name="Logout" component={GoogleMap}  options={HeaderBase("Logout","settings") } />
       
       
     </Drawer.Navigator>
@@ -68,7 +68,7 @@ function BtoomNav() {
     return (
       <Tab.Navigator  >  
          <Tab.Screen   name={App_Name} component={WorkSpaceListView}  options={{headerShown:true  ,...HeaderBase(App_Name,"home") } }  />
-        <Tab.Screen    name="Map" component={GoogleMap}   options={{ ...HeaderBase("Map","map") }} />
+        <Tab.Screen    name="Map" component={GoogleMap}   options={{ headerShown:false,...HeaderBase("Map","map") }} />
         <Tab.Screen name="Settings" component={NavDrawer}  options={{headerShown:false,tabBarBadge: 3,valueOf,...HeaderBase("Settings","settings")}}  />
        
       </Tab.Navigator>

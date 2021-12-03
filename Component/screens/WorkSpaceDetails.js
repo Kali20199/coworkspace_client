@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Image, Button, Alert, Animated, Easing, Dimensions } from 'react-native'
-import React, { useEffect,useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useStore } from '../../store/store'
 import Color from '../../constant/Color'
 import PushNotification from 'react-native-push-notification'
@@ -32,84 +32,99 @@ function WorkSpaceDetails(props) {
     inputRange: [0, 1],
     outputRange: [0, 4]
   })
-  const vacation = {key: 'vacation', color: 'red', selectedDotColor: 'blue'};
-const massage = {key: 'massage', color: 'blue', selectedDotColor: 'blue'};
-const workout = {key: 'workout', color: 'green'};
+  const vacation = { key: 'vacation', color: 'red', selectedDotColor: 'blue' };
+  const massage = { key: 'massage', color: 'blue', selectedDotColor: 'blue' };
+  const workout = { key: 'workout', color: 'green' };
 
-const [mode, setMode] = useState('date');
-const [show, setShow] = useState(false);
-
-
-
-const showMode = (currentMode) => {
-  setShow(true);
-  setMode(currentMode);
- 
-};
-
-const showDatepicker = () => {
-  setShow(true);
-  showMode('date');
-
- 
-};
-
-const showTimepicker = () => {
-  showMode('time');
-
-};
+  const [mode, setMode] = useState('date');
+  const [show, setShow] = useState(false);
+  const [TimeReserved, SetTimeReserved] = useState(null)
+  const [DateRaserved, SetDateRaserved] = useState(null)
 
 
-const onChange = (event, selectedDate) => {
-  const currentDate = selectedDate || date;
-  setShow(Platform.OS === 'ios');
-  setDate(currentDate);
-  
-};
+
+  const showMode = (currentMode) => {
+    setShow(true);
+    setMode(currentMode);
+
+  };
+
+  const showDatepicker = () => {
+    setShow(true);
+    showMode('date');
+
+
+  };
+
+  const showTimepicker = (event) => {
+    showMode('time');
+    const c = event
+  };
+
+
+  const onChange = (event, selectedDate) => {
+    const currentDate = selectedDate || date;
+    const Calenders = currentDate.toString().split(" ")
+    
+   
+    if(mode=='date'){
+      const Date = Calenders[0]+'/'+Calenders[1]+'/'+Calenders[2]
+      SetDateRaserved(Date)
+    }else{
+    const Time = currentDate.toString().split(" ")[4]
+    SetTimeReserved(Time)
+    }
+    setShow(Platform.OS === 'ios');
+    setDate(currentDate);
+
+  };
 
   const ReservarionModal = () => {
     const date = new Date();
-    const Now = moment(date).format('YYYY-MM-DD')
-  
-   
+    // const Now = moment(date).format('YYYY-MM-DD')
+
+
     return (
       <Portal>
-        <Dialog style={{backgroundColor:'white'}} visible={visible} onDismiss={hideModal}>
-          <Dialog.Title style={{color:'black'}}>Pick up Date</Dialog.Title>
+        <Dialog style={{ backgroundColor: 'white' }} visible={visible} onDismiss={hideModal}>
+          <Dialog.Title style={{ color: 'black' }}>Pick up Date</Dialog.Title>
           <Dialog.Content >
-            <Paragraph style={{color:'black'}}>Request Permission Access Local Storage</Paragraph>
-            <BTs    onPress={showTimepicker}  >
-            pick A Time
-            <Text>  
-            <Image  style={{height:20}} source={TIMEADD}  color='black'/> 
-            </Text>
+            <Paragraph style={{ color: 'black' }}>Request Permission Access Local Storage</Paragraph>
+            <BTs onPress={showTimepicker}  >
+              pick A Time
+              <Text>
+                <Image style={{ height: 20 }} source={TIMEADD} color='black' />
+              </Text>
             </BTs>
             <BTs color={'red'} onPress={showDatepicker} >
-            Pick A date
-            <Image  source={DATE} size={12}  color='green'/> 
-          
+              Pick A date
+              <Image source={DATE} size={12} color='green' />
+
             </BTs>
-         
-            {show &&(
-           
+
+            {show && (
               <>
-        
-            <DateTimePicker
-          testID="dateTimePicker"
-          value={date}
-          mode={mode}
-          is24Hour={true}
-          display="default"
-          onChange={onChange}
-         
-        />
-      
-        </>
-   
-            )      }
+                <DateTimePicker
+                  testID="dateTimePicker"
+                  value={date}
+                  mode={mode}
+                  is24Hour={true}
+                  display="default"
+                  onChange={onChange}
+                />
+              </>
+            )}
           </Dialog.Content>
           <Dialog.Actions>
-            <BTs onPress={() => setVisible(false)}>Confirm</BTs>
+            <BTs onPress={() => {
+              if(DateRaserved!==null && TimeReserved!==null){
+                 Alert.alert("Reserve Requested", `${DateRaserved} :  ${TimeReserved}`)
+                 setVisible(false)
+              }else{
+                Alert.alert("Please Select both Date and Time")
+              }
+    
+            }}>Confirm</BTs>
             <BTs onPress={() => setVisible(false)}>Cancel</BTs>
           </Dialog.Actions>
         </Dialog>
@@ -260,20 +275,21 @@ const onChange = (event, selectedDate) => {
           {ReservarionModal()}
           <View style={style.button}>
             <Button onPress={() => {
-             
-        
+
+
               // Notifi()
               showModal()
 
 
 
-              // PushNotification.localNotification({
-              //   channelId: "test-channel",
-              //   title: "Light Space",
-              //   message: 'Reserved Succssefully',
+              PushNotification.localNotification({
+                channelId: "test-channel",
+                title: "Light Space",
+                message: 'Reserved Succssefully',
+              
 
-              // })
-              //   Alert.alert("Reserve Requested", `Name ${UserStore.Creds.userName} \nDate : ${date.getDay()}/${date.getHours().toFixed(2)}:${date.getMinutes()}M `)
+              })
+           
             }} color={Color.primary} title={'Reserve Now'} />
           </View>
         </View>
