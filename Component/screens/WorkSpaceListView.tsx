@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { View,Text,FlatList,Image,TouchableOpacity } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity, Button } from 'react-native';
 import { Work } from '../../constant/Application';
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { observer } from 'mobx-react-lite';
 import { store } from '../../store/store';
 import Searchbar from '../Widgets/serchBar'
+import Color from '../../constant/Color';
 
 
 
@@ -13,31 +14,43 @@ import Searchbar from '../Widgets/serchBar'
 
 
 
-const LightSpaceListItem=(props)=>{
-    const {CoWorkStore} = store
-    const {item}  = props 
-    const {name,id,imageurl,tables} = item.item
-    const x =3;
+const LightSpaceListItem = (props) => {
+    const { CoWorkStore } = store
+    const { item } = props
+    const { name, id, imageurl, tables } = item.item
+    const x = 3;
     return (
-        
-         <View style={style.list}>
-        
-             <TouchableOpacity style={style.item_container} onPress={()=>{
-                 CoWorkStore.setWorkSpaceOptions(name,id,imageurl,tables)
-                 props.nav.navigate('Ink')}}>
-        <View style={{width:'100%'}}>
-            <Image  style={style.image} source={{uri:imageurl}} />
-         <View>
-          <Text style={style.name}> {item.item.name}</Text>
-          <Text style={ {...style.name}}> Open: 
-          <Text  style={ style.open}>{item.item.open ? "Open Now"  : "Closed"}
-          </Text> 
-          </Text>
-          </View>
+
+        <View style={style.list}>
+
+            <TouchableOpacity style={style.item_container} onPress={() => {
+                CoWorkStore.setWorkSpaceOptions(name, id, imageurl, tables)
+                props.nav.navigate('Ink')
+            }}>
+                <View style={{ width: '100%' }}>
+                    <Image style={style.image} source={{ uri: imageurl }} />
+                    <View style={style.Info}>
+                        <Text style={style.Name}>
+                            {name}
+                        </Text>
+                        <View style={style.lowerSec}>
+                            <Text style={style.open}>
+                                Open
+                            </Text>
+
+                            <Text style={style.City}>
+                                Alexandria
+                            </Text>
+                            <Button onPress={() => {
+                                CoWorkStore.setWorkSpaceOptions(name, id, imageurl, tables)
+                                props.nav.navigate('Ink')
+                            }} color={Color.Orange} title={'Reserve Now'} />
+                        </View>
+                    </View>
+                </View>
+            </TouchableOpacity>
         </View>
-        </TouchableOpacity>
-        </View>
-    
+
     )
 }
 
@@ -47,42 +60,41 @@ const LightSpaceListItem=(props)=>{
 
 
 function WorkSpaceListView(props) {
-    
-
-    const [value,setValue] = useState('')
-    const [sortArr,setSortedArr] = useState([])
 
 
-    useEffect(()=>{
+    const [value, setValue] = useState('')
+    const [sortArr, setSortedArr] = useState([])
+
+
+    useEffect(() => {
         setSortedArr(Work)
-    },[])
+    }, [])
 
-    const ChangeHandler=(event)=>{
-     const {text} = event.nativeEvent
-     
-     setValue(text)
+    const ChangeHandler = (event) => {
+        const { text } = event.nativeEvent
 
-   
-     value == "" ?  setSortedArr(Work) :   setSortedArr([])
-     const arr = []
-      Work.map((index)=>{
-         if(index.name.toUpperCase().includes(text.toUpperCase()))
+        setValue(text)
 
-         {arr.push(index)}
-     })
-     setSortedArr(arr)
-     const x =3;
+
+        value == "" ? setSortedArr(Work) : setSortedArr([])
+        const arr = []
+        Work.map((index) => {
+            if (index.name.toUpperCase().includes(text.toUpperCase())) { arr.push(index) }
+        })
+        setSortedArr(arr)
+        const x = 3;
     }
-   
-   
-   
-   
+
+
+
+
     return (
         <View>
-          <View style={style.serbarView}>
-          <Searchbar value={value} ChangeHandler={ChangeHandler}  />
-          </View>
-            <FlatList numColumns={1} data={sortArr} keyExtractor={item=>item.id} renderItem={item=>  <LightSpaceListItem item={item} nav={props.navigation}/>} />
+            <View style={style.serbarView}>
+                <Searchbar value={value} ChangeHandler={ChangeHandler} />
+            </View>
+            <FlatList style={{marginBottom:50}} numColumns={1} data={sortArr} keyExtractor={item => item.id} renderItem={item => <LightSpaceListItem item={item} nav={props.navigation} />} />
+          
         </View>
     )
 }
@@ -91,69 +103,85 @@ function WorkSpaceListView(props) {
 
 const style = StyleSheet.create({
 
-    serbarView:{
-    flexDirection:'row',
-    justifyContent:'center',
-    width:'100%'
-  
-   },
+    serbarView: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        width: '100%'
 
-    list:{
-      flexDirection:'row',
-      alignItems:'center',
-      justifyContent:'center',
-      width:'95%',
-    
-     
-      
+    },
+
+    list: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+
+
+
     },
 
 
- 
-    item_container:{
-        marginTop: 20,  
-        height:250,
-        flexDirection:'row',
-        justifyContent:'center',
-        alignContent:'center',
-        width:'90%',
+
+    item_container: {
+
+
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignContent: 'center',
+        width: '100%',
         shadowColor: 'black',
-        shadowOpacity: 0.26,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 8,
-        elevation: 5,
-        borderRadius: 10,
-        backgroundColor: 'white'
+
+
 
     },
-    image:{
-       
-        width:'100%',
-        backgroundColor:'black',
-        height:170,
+    image: {
+
+        width: '100%',
+        backgroundColor: 'black',
+        height: 180,
+
     },
-    name:{
-        color :'black',
-        padding:5,
-        width:'100%',
-   
+    name: {
+        color: 'black',
+        padding: 5,
+        width: '100%',
+
+    },
+    Info: {
+
+
+        position: 'absolute',
+        zIndex: 2,
+        left: 4,
+        bottom: 9,
+    },
+    Name: {
+        color: 'white',
+        fontSize: 21,
+        fontWeight: '900',
+    },
+
+    lowerSec: {
+        width: '92%',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+    },
+    City: {
+        color: Color.primary,
+        fontSize: 21,
+        fontWeight: '900',
+    },
+    open: {
+        color: '#12ba0f',
+        fontSize: 21,
+        fontWeight: '900',
+
     },
 
 
-    open:{
-       position:'absolute' ,
-       right:0,
-       color:'#038900',
-       marginRight:10,
-  
-  
-       
-      
-    },
-    
 
-
-}) 
+})
 
 
 
