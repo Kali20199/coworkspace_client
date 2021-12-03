@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useStore } from '../../store/store';
 import { observer } from 'mobx-react-lite';
 import axios from 'axios'
-import { Platform,Alert, View,Text, StyleSheet,ViewStyle,TextStyle,TextInput, Button } from 'react-native';
+import { Platform,Alert, View,Text, StyleSheet,ViewStyle,TextStyle,TextInput, Button,Image } from 'react-native';
 import LottieView from 'lottie-react-native'
 import Color from '../../constant/Color'
 import { ScrollView } from 'react-native-gesture-handler';
+import LOGO from '../../assets/LightSpace.png'
 import PushNotification from 'react-native-push-notification'
+import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 // import axios from 'react-native-axios'
 function Login(props) {
 
@@ -64,7 +66,10 @@ function Login(props) {
     return (
       <ScrollView>
      <View style={style.Page}>
+       <View style={style.logoview}>
            <LottieView style={style.app} source={require('../../Lottie/3520-light-bulb.json')} autoPlay loop/>
+           <Image style={style.ImageLogo} source={LOGO}/>
+           </View>
       <View style={style.container}> 
 
       <TextInput onChange={handleInput} nativeID='email' placeholder={'Email'} style={style.Input} />
@@ -75,6 +80,15 @@ function Login(props) {
       <View style={style.BT}>
       <Button color={Color.accent} onPress={()=>{props.navigation.navigate('Register')}} title={'Register'}/>
       </View>
+      <View style={style.BT}>
+        <FBLogin
+        onPermissionsMissing={()=>{
+          FBLoginManager.EV
+          Alert.alert("Logged")}}
+          onLogin={function(data){return ""}}
+        loginBehavior={FBLoginManager.LoginBehaviors.Native}/>
+
+     </View>
     </View>
     </View>
     </ScrollView>
@@ -91,7 +105,7 @@ export const style=StyleSheet.create({
   },
   app:{
 
-    height:250,
+    height:150,
     flexDirection:'row',
     width:'100%',
     justifyContent:'center',
@@ -99,7 +113,7 @@ export const style=StyleSheet.create({
 
 },
   container:{
-   
+    marginTop:50,
     justifyContent:'center',
     width:'70%',
     marginLeft: 'auto',
@@ -131,6 +145,19 @@ export const style=StyleSheet.create({
   
    marginTop:20
   },
+
+  logoview:{
+   marginLeft:110,
+  },
+
+  ImageLogo:{
+    width:150,
+    height:70,
+    // position:'absolute',
+    // zIndex:1,
+   
+    // marginTop:90 
+  }
 
  
 
