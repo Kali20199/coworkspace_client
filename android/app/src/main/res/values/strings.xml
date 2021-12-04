@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">coworkspace_client</string>
+    <string name="facebook_app_id">649936695527390</string>
+    <string name="facebook_client_token">3bd93a355af33402c9e4cb07babd3de5</string>
 </resources>

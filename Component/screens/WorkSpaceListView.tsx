@@ -168,14 +168,15 @@ const style = StyleSheet.create({
         justifyContent: 'space-between'
     },
     City: {
-        color: Color.primary,
+        color: 'white',
         fontSize: 21,
-        fontWeight: '900',
+       
     },
     open: {
-        color: '#12ba0f',
+    
+        color: 'white',
         fontSize: 21,
-        fontWeight: '900',
+       
 
     },
 

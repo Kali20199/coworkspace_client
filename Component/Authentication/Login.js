@@ -83,7 +83,13 @@ function Login(props) {
       <View style={style.BT}>
         <FBLogin
         onPermissionsMissing={()=>{
-          FBLoginManager.EV
+          FBLoginManager.loginWithPermissions(["email","user_friends"], function(error, data){
+            if (!error) {
+              console.log("Login data: ", data);
+            } else {
+              console.log("Error: ", error);
+            }
+          })
           Alert.alert("Logged")}}
           onLogin={function(data){return ""}}
         loginBehavior={FBLoginManager.LoginBehaviors.Native}/>

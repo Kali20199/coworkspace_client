@@ -15,10 +15,9 @@ import { LocaleConfig } from 'react-native-calendars';
 import CalendarPicker from 'react-native-calendar-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment'
-
 import TIMEADD from '../../assets/time.png'
 import DATE from '../../assets/date.png'
-
+import { WebView } from 'react-native-webview';
 const windowWidth = Dimensions.get('window').width;
 function WorkSpaceDetails(props) {
   const [visible, setVisible] = React.useState(false);
@@ -125,7 +124,9 @@ function WorkSpaceDetails(props) {
               }
     
             }}>Confirm</BTs>
+         
             <BTs onPress={() => setVisible(false)}>Cancel</BTs>
+         
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -185,6 +186,7 @@ function WorkSpaceDetails(props) {
 
   return (
     <ScrollView style={style.view}>
+        
       <Provider>
         <View>
           <View>
@@ -261,7 +263,7 @@ function WorkSpaceDetails(props) {
               </Text>
 
 
-
+           
 
 
               <Card>
@@ -293,7 +295,9 @@ function WorkSpaceDetails(props) {
             }} color={Color.primary} title={'Reserve Now'} />
           </View>
         </View>
+
       </Provider>
+      {/* <WebView style={{width:400,height:800}} source={{ uri: 'http://192.168.1.30:3001/Dashboard' }} /> */}
     </ScrollView>
   )
 }

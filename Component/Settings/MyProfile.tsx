@@ -153,7 +153,7 @@ function MyProfile() {
 
                     <View>
                     </View>
-                    <Button color={'red'} onPress={showDialog}>Dlete My Account <Text>
+                    <Button color={'red'} onPress={showDialog}>Cancel All Reservations <Text>
                         <MaterialCommunityIcons name={'trash'} size={20} color='red' />
                     </Text>
                     </Button>
