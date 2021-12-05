@@ -10,17 +10,28 @@ import Iconics from 'react-native-vector-icons/Ionicons'
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { Modal, Portal, Button as BTs, Provider, Dialog, Paragraph } from 'react-native-paper';
 import { Card, Button as Buttons, Icon } from 'react-native-elements'
-import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
-import { LocaleConfig } from 'react-native-calendars';
-import CalendarPicker from 'react-native-calendar-picker';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from 'moment'
 import TIMEADD from '../../assets/time.png'
 import DATE from '../../assets/date.png'
 import { WebView } from 'react-native-webview';
+// import signalr from 'react-native-signalr';
+import * as signalR from '@microsoft/signalr';
+
+
+
+
+
+
+
+
+
+
+
 const windowWidth = Dimensions.get('window').width;
 function WorkSpaceDetails(props) {
   const [visible, setVisible] = React.useState(false);
+
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -34,11 +45,32 @@ function WorkSpaceDetails(props) {
   const vacation = { key: 'vacation', color: 'red', selectedDotColor: 'blue' };
   const massage = { key: 'massage', color: 'blue', selectedDotColor: 'blue' };
   const workout = { key: 'workout', color: 'green' };
-
+  const { CoWorkStore, UserStore } = useStore()
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [TimeReserved, SetTimeReserved] = useState(null)
   const [DateRaserved, SetDateRaserved] = useState(null)
+
+  const hubConnection = new signalR.HubConnectionBuilder()
+    .withUrl("http://192.168.1.30:5003/chat?Reservations=SendMessage")
+    .configureLogging(signalR.LogLevel.Information)
+    .build();
+  // const proxy = connection.createHubProxy('caht')
+
+
+  const Reservation = (Date, Email, CoworkSpaceId) => {
+
+    let model = {
+
+      Email: Email,
+      CoworkSpaceid: CoworkSpaceId,
+      UserName: 'Mostafa',
+      TimeReservd: Date
+
+    }
+
+    return model
+  }
 
 
 
@@ -64,14 +96,14 @@ function WorkSpaceDetails(props) {
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate || date;
     const Calenders = currentDate.toString().split(" ")
-    
-   
-    if(mode=='date'){
-      const Date = Calenders[0]+'/'+Calenders[1]+'/'+Calenders[2]
+
+
+    if (mode == 'date') {
+      const Date = Calenders[0] + '/' + Calenders[1] + '/' + Calenders[2]
       SetDateRaserved(Date)
-    }else{
-    const Time = currentDate.toString().split(" ")[4]
-    SetTimeReserved(Time)
+    } else {
+      const Time = currentDate.toString().split(" ")[4]
+      SetTimeReserved(Time)
     }
     setShow(Platform.OS === 'ios');
     setDate(currentDate);
@@ -116,17 +148,19 @@ function WorkSpaceDetails(props) {
           </Dialog.Content>
           <Dialog.Actions>
             <BTs onPress={() => {
-              if(DateRaserved!==null && TimeReserved!==null){
-                 Alert.alert("Reserve Requested", `${DateRaserved} :  ${TimeReserved}`)
-                 setVisible(false)
-              }else{
+              if (DateRaserved !== null && TimeReserved !== null) {
+                Alert.alert("Reserve Requested", `${DateRaserved} :  ${TimeReserved}`)
+                hubConnection.invoke("Reservations", Reservation(DateRaserved + TimeReserved
+                  , "mostafaihab2019@gmail.com", CoWorkStore.id))
+                setVisible(false)
+              } else {
                 Alert.alert("Please Select both Date and Time")
               }
-    
+
             }}>Confirm</BTs>
-         
+
             <BTs onPress={() => setVisible(false)}>Cancel</BTs>
-         
+
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -172,21 +206,82 @@ function WorkSpaceDetails(props) {
       easing: Easing.linear,
     }).start()
 
-
     CreateChannel()
+
+    hubConnection.start()
+
+    hubConnection.on("Reservations", (data) => {
+
+    })
+
+
   })
 
 
+  const RenderInfo = () => {
+    return (
+
+      <>
+        <Text style={[style.moreinfo]}>
+          <MaterialCommunityIcons name={'phone'} size={20} color='green' />
+          .     phone : 01111309569
+        </Text>
+
+        <Text style={[style.moreinfo]}>
+          <MaterialCommunityIcons name={'users'} size={20} color='blue' />
+          .     Owner : Mostafa ihab
+        </Text>
+        <Text style={[style.moreinfo]}>
+          <MaterialCommunityIcons name={'clock'} size={20} color='green' />
+          .     Time Open : 8:30 AM
+        </Text>
+        <Text style={[style.moreinfo]}>
+          <FontAwesome5 name={"window-close"} size={20} color='red' />
+          .    Time Close : 10 PM
+        </Text>
+
+
+        <Text style={[style.moreinfo]}>
+          <FontAwesome5 name={"table"} size={20} color='brown' />
+          .     Tables : 12
+        </Text>
+
+        <Text style={[style.moreinfo]}>
+          <FontAwesome5 name={"person-booth"} size={20} color='green' />
+          .     Private Rooms : 5
+        </Text>
+
+        <Text style={[style.moreinfo]}>
+          <FontAwesome5 name={"coins"} size={20} color='yellow' />
+          .     TablePrice : 20 EGP
+        </Text>
+
+        <Text style={[style.moreinfo]}>
+          <View style={{ marginLeft: 20 }}>
+            <FontAwesome5 name={"coins"} size={20} color='#490e5d' />
+          </View>
+          .    PrivateRoomPerHoure : 50 EGB - 100 EGP
+        </Text>
+
+        <Text style={[style.info]}>
+          Notes :
+        </Text>
+        <Text style={[style.moreinfo]}>
+          Notes is a notetaking app developed by Apple. It is provided on their iOS and macOS operating systems, the latter starting with OS X 10.8 Mountain Lion. It functions as a service for making short text notes, which can be synchronised between devices using
+        </Text>
+
+      </>
+    )
+  }
 
 
 
-  const { CoWorkStore, UserStore } = useStore()
   const pan = React.useRef(new Animated.ValueXY()).current;
   const Detail = CoWorkStore
-
+  {setTimeout(()=>  <RenderInfo/>, 1000)}
   return (
     <ScrollView style={style.view}>
-        
+
       <Provider>
         <View>
           <View>
@@ -212,58 +307,14 @@ function WorkSpaceDetails(props) {
               <Text style={[style.info]}>
                 Space Info
               </Text>
+          
+            
 
 
-              <Text style={[style.moreinfo]}>
-                <MaterialCommunityIcons name={'phone'} size={20} color='green' />
-                .     phone : 01111309569
-              </Text>
-
-              <Text style={[style.moreinfo]}>
-                <MaterialCommunityIcons name={'users'} size={20} color='blue' />
-                .     Owner : Mostafa ihab
-              </Text>
-              <Text style={[style.moreinfo]}>
-                <MaterialCommunityIcons name={'clock'} size={20} color='green' />
-                .     Time Open : 8:30 AM
-              </Text>
-              <Text style={[style.moreinfo]}>
-                <FontAwesome5 name={"window-close"} size={20} color='red' />
-                .    Time Close : 10 PM
-              </Text>
 
 
-              <Text style={[style.moreinfo]}>
-                <FontAwesome5 name={"table"} size={20} color='brown' />
-                .     Tables : 12
-              </Text>
-
-              <Text style={[style.moreinfo]}>
-                <FontAwesome5 name={"person-booth"} size={20} color='green' />
-                .     Private Rooms : 5
-              </Text>
-
-              <Text style={[style.moreinfo]}>
-                <FontAwesome5 name={"coins"} size={20} color='yellow' />
-                .     TablePrice : 20 EGP
-              </Text>
-
-              <Text style={[style.moreinfo]}>
-                <View style={{ marginLeft: 20 }}>
-                  <FontAwesome5 name={"coins"} size={20} color='#490e5d' />
-                </View>
-                .    PrivateRoomPerHoure : 50 EGB - 100 EGP
-              </Text>
-
-              <Text style={[style.info]}>
-                Notes :
-              </Text>
-              <Text style={[style.moreinfo]}>
-                Notes is a notetaking app developed by Apple. It is provided on their iOS and macOS operating systems, the latter starting with OS X 10.8 Mountain Lion. It functions as a service for making short text notes, which can be synchronised between devices using
-              </Text>
 
 
-           
 
 
               <Card>
@@ -288,10 +339,10 @@ function WorkSpaceDetails(props) {
                 channelId: "test-channel",
                 title: "Light Space",
                 message: 'Reserved Succssefully',
-              
+
 
               })
-           
+
             }} color={Color.primary} title={'Reserve Now'} />
           </View>
         </View>
