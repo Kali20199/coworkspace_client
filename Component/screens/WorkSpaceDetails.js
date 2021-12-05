@@ -278,7 +278,7 @@ function WorkSpaceDetails(props) {
 
   const pan = React.useRef(new Animated.ValueXY()).current;
   const Detail = CoWorkStore
-  {setTimeout(()=>  <RenderInfo/>, 1000)}
+  { setTimeout(() => <RenderInfo />, 1000) }
   return (
     <ScrollView style={style.view}>
 
@@ -301,22 +301,13 @@ function WorkSpaceDetails(props) {
 
 
               <Animated.Text style={[style.text, style.cards]}>
-                .    city : {Detail.city}
+                city : {Detail.city}
               </Animated.Text>
 
               <Text style={[style.info]}>
                 Space Info
               </Text>
-          
-            
-
-
-
-
-
-
-
-
+              <RenderInfo />
               <Card>
                 <Card.Title>Space View</Card.Title>
                 <FlatList horizontal data={Work} renderItem={item => <WorkSpaceImage img={item.item.imageurl} />} />
