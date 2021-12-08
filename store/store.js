@@ -1,11 +1,13 @@
 import { createContext, useContext } from "react";
 import CoWorkStore from './CoWorkStore'
 import UserStore from './User'
+import  HubStore  from './HubStore';
 
 
 export const store=({
     CoWorkStore:new CoWorkStore(),
-    UserStore:new UserStore()
+    UserStore:new UserStore(),
+    Hub:new HubStore()
 })
 
 

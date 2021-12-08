@@ -11,11 +11,9 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { Modal, Portal, Button as BTs, Provider, Dialog, Paragraph } from 'react-native-paper';
 import { Card, Button as Buttons, Icon } from 'react-native-elements'
 import DateTimePicker from '@react-native-community/datetimepicker';
-import moment from 'moment'
+
 import TIMEADD from '../../assets/time.png'
 import DATE from '../../assets/date.png'
-import { WebView } from 'react-native-webview';
-// import signalr from 'react-native-signalr';
 import * as signalR from '@microsoft/signalr';
 
 
@@ -42,19 +40,18 @@ function WorkSpaceDetails(props) {
     inputRange: [0, 1],
     outputRange: [0, 4]
   })
-  const vacation = { key: 'vacation', color: 'red', selectedDotColor: 'blue' };
-  const massage = { key: 'massage', color: 'blue', selectedDotColor: 'blue' };
-  const workout = { key: 'workout', color: 'green' };
-  const { CoWorkStore, UserStore } = useStore()
+
+  const { CoWorkStore, UserStore,Hub} = useStore()
+  
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
   const [TimeReserved, SetTimeReserved] = useState(null)
   const [DateRaserved, SetDateRaserved] = useState(null)
 
-  const hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl("http://192.168.1.30:5003/chat?Reservations=SendMessage")
-    .configureLogging(signalR.LogLevel.Information)
-    .build();
+  // const hubConnection = new signalR.HubConnectionBuilder()
+  //   .withUrl("http://192.168.1.30:5003/chat?Reservations=SendMessage")
+  //   .configureLogging(signalR.LogLevel.Information)
+  //   .build();
   // const proxy = connection.createHubProxy('caht')
 
 
@@ -63,7 +60,7 @@ function WorkSpaceDetails(props) {
     let model = {
 
       Email: Email,
-      CoworkSpaceid: CoworkSpaceId,
+      CoworkSpaceid: 'ba632f69-a90d-4fcd-41eb-08d9ad4681ed',
       UserName: 'Mostafa',
       TimeReservd: Date
 
@@ -150,7 +147,7 @@ function WorkSpaceDetails(props) {
             <BTs onPress={() => {
               if (DateRaserved !== null && TimeReserved !== null) {
                 Alert.alert("Reserve Requested", `${DateRaserved} :  ${TimeReserved}`)
-                hubConnection.invoke("Reservations", Reservation(DateRaserved + TimeReserved
+               Hub.Invoke("Reservations", Reservation(DateRaserved +":"+ TimeReserved
                   , "mostafaihab2019@gmail.com", CoWorkStore.id))
                 setVisible(false)
               } else {
@@ -174,7 +171,7 @@ function WorkSpaceDetails(props) {
     return (
       <View style={{ marginLeft: 20 }}>
 
-        <Image style={{ height: 150, width: 200 }} source={{ uri: props.img }} />
+        <Image  style={{ height: 150, width: 200 }} source={{ uri: props.img }} />
       </View>
     )
   }
@@ -206,16 +203,17 @@ function WorkSpaceDetails(props) {
       easing: Easing.linear,
     }).start()
 
-    CreateChannel()
+    CreateChannel() 
 
-    hubConnection.start()
+    Hub.StartHubConnection()
+    // hubConnection.start()
 
-    hubConnection.on("Reservations", (data) => {
+    // hubConnection.on("Reservations", (data) => {
+             
+    // })
 
-    })
 
-
-  })
+  },[])
 
 
   const RenderInfo = () => {
@@ -280,7 +278,7 @@ function WorkSpaceDetails(props) {
   const Detail = CoWorkStore
   { setTimeout(() => <RenderInfo />, 1000) }
   return (
-    <ScrollView style={style.view}>
+    <ScrollView >
 
       <Provider>
         <View>
@@ -308,7 +306,11 @@ function WorkSpaceDetails(props) {
                 Space Info
               </Text>
               <RenderInfo />
-              <Card>
+   
+              
+
+
+              <Card> 
                 <Card.Title>Space View</Card.Title>
                 <FlatList horizontal data={Work} renderItem={item => <WorkSpaceImage img={item.item.imageurl} />} />
 

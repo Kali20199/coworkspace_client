@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList, Image, TouchableOpacity, Button } from 'react-native';
+import { View, Text, FlatList, ImageBackground, TouchableOpacity, Button } from 'react-native';
 import { Work } from '../../constant/Application';
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -28,26 +28,29 @@ const LightSpaceListItem = (props) => {
                 props.nav.navigate('Ink')
             }}>
                 <View style={{ width: '100%' }}>
-                    <Image style={style.image} source={{ uri: imageurl }} />
-                    <View style={style.Info}>
-                        <Text style={style.Name}>
-                            {name}
-                        </Text>
-                        <View style={style.lowerSec}>
-                            <Text style={style.open}>
-                                Open
-                            </Text>
-
-                            <Text style={style.City}>
-                                Alexandria
-                            </Text>
-                            <Button onPress={() => {
-                                CoWorkStore.setWorkSpaceOptions(name, id, imageurl, tables)
-                                props.nav.navigate('Ink')
-                            }} color={Color.Orange} title={'Reserve Now'} />
+                    <ImageBackground style={style.image} source={{ uri: imageurl }}>
+                        <View style={style.ImgaeBack}>
+                            <View style={style.Info}>
+                                <Text style={style.Name}>
+                                    {name}
+                                </Text>
+                                <View style={style.lowerSec}>
+                                    <Text style={style.open}>
+                                        Open
+                                    </Text>
+                                    <Text style={style.City}>
+                                        Alexandria
+                                    </Text>
+                                    <Button onPress={() => {
+                                        CoWorkStore.setWorkSpaceOptions(name, id, imageurl, tables)
+                                        props.nav.navigate('Ink')
+                                    }} color={Color.Orange} title={'Reserve Now'} />
+                                </View>
+                            </View>
                         </View>
-                    </View>
+                    </ImageBackground>
                 </View>
+
             </TouchableOpacity>
         </View>
 
@@ -93,8 +96,8 @@ function WorkSpaceListView(props) {
             <View style={style.serbarView}>
                 <Searchbar value={value} ChangeHandler={ChangeHandler} />
             </View>
-            <FlatList style={{marginBottom:50}} numColumns={1} data={sortArr} keyExtractor={item => item.id} renderItem={item => <LightSpaceListItem item={item} nav={props.navigation} />} />
-          
+            <FlatList style={{ marginBottom: 50 }} numColumns={1} data={sortArr} keyExtractor={item => item.id} renderItem={item => <LightSpaceListItem item={item} nav={props.navigation} />} />
+
         </View>
     )
 }
@@ -134,6 +137,10 @@ const style = StyleSheet.create({
 
 
     },
+    ImgaeBack: {
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)'
+    },
     image: {
 
         width: '100%',
@@ -170,13 +177,14 @@ const style = StyleSheet.create({
     City: {
         color: 'white',
         fontSize: 21,
-       
+
     },
     open: {
-    
-        color: 'white',
+        
+        color:'#08b03d',
+        fontWeight:'900',
         fontSize: 21,
-       
+
 
     },
 
