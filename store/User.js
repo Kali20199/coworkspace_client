@@ -40,9 +40,9 @@ export default class UserStore {
 
     }
 
-    Login = (Cred) => {
+    Login = async(Cred) => {
 
-        agent.Account.Login(Cred).then(() => { this.GetuserToken(Cred.email, Cred.password) })
+      await  agent.Account.Login(Cred).then(() => { this.GetuserToken(Cred.email, Cred.password) })
         agent.Account.SayHello()
 
 

@@ -11,9 +11,10 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5'
 import { Modal, Portal, Button as BTs, Provider, Dialog, Paragraph } from 'react-native-paper';
 import { Card, Button as Buttons, Icon } from 'react-native-elements'
 import DateTimePicker from '@react-native-community/datetimepicker';
-
+import SwipeUpDownModal from 'react-native-swipe-modal-up-down';
 import TIMEADD from '../../assets/time.png'
 import DATE from '../../assets/date.png'
+import SwipeModal from '../Modals/SwipeModal'
 import * as signalR from '@microsoft/signalr';
 
 
@@ -29,7 +30,7 @@ import * as signalR from '@microsoft/signalr';
 const windowWidth = Dimensions.get('window').width;
 function WorkSpaceDetails(props) {
   const [visible, setVisible] = React.useState(false);
-
+  const [showInfo,setInfo] = useState(true)
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -43,127 +44,11 @@ function WorkSpaceDetails(props) {
 
   const { CoWorkStore, UserStore,Hub} = useStore()
   
-  const [mode, setMode] = useState('date');
-  const [show, setShow] = useState(false);
-  const [TimeReserved, SetTimeReserved] = useState(null)
-  const [DateRaserved, SetDateRaserved] = useState(null)
 
-  // const hubConnection = new signalR.HubConnectionBuilder()
-  //   .withUrl("http://192.168.1.30:5003/chat?Reservations=SendMessage")
-  //   .configureLogging(signalR.LogLevel.Information)
-  //   .build();
-  // const proxy = connection.createHubProxy('caht')
-
-
-  const Reservation = (Date, Email, CoworkSpaceId) => {
-
-    let model = {
-
-      Email: Email,
-      CoworkSpaceid: 'ba632f69-a90d-4fcd-41eb-08d9ad4681ed',
-      UserName: 'Mostafa',
-      TimeReservd: Date
-
-    }
-
-    return model
-  }
+  const [swipeModal, setSwipeModal] = useState(false);
 
 
 
-  const showMode = (currentMode) => {
-    setShow(true);
-    setMode(currentMode);
-
-  };
-
-  const showDatepicker = () => {
-    setShow(true);
-    showMode('date');
-
-
-  };
-
-  const showTimepicker = (event) => {
-    showMode('time');
-    const c = event
-  };
-
-
-  const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    const Calenders = currentDate.toString().split(" ")
-
-
-    if (mode == 'date') {
-      const Date = Calenders[0] + '/' + Calenders[1] + '/' + Calenders[2]
-      SetDateRaserved(Date)
-    } else {
-      const Time = currentDate.toString().split(" ")[4]
-      SetTimeReserved(Time)
-    }
-    setShow(Platform.OS === 'ios');
-    setDate(currentDate);
-
-  };
-
-  const ReservarionModal = () => {
-    const date = new Date();
-    // const Now = moment(date).format('YYYY-MM-DD')
-
-
-    return (
-      <Portal>
-        <Dialog style={{ backgroundColor: 'white' }} visible={visible} onDismiss={hideModal}>
-          <Dialog.Title style={{ color: 'black' }}>Pick up Date</Dialog.Title>
-          <Dialog.Content >
-            <Paragraph style={{ color: 'black' }}>Request Permission Access Local Storage</Paragraph>
-            <BTs onPress={showTimepicker}  >
-              pick A Time
-              <Text>
-                <Image style={{ height: 20 }} source={TIMEADD} color='black' />
-              </Text>
-            </BTs>
-            <BTs color={'red'} onPress={showDatepicker} >
-              Pick A date
-              <Image source={DATE} size={12} color='green' />
-
-            </BTs>
-
-            {show && (
-              <>
-                <DateTimePicker
-                  testID="dateTimePicker"
-                  value={date}
-                  mode={mode}
-                  is24Hour={true}
-                  display="default"
-                  onChange={onChange}
-                />
-              </>
-            )}
-          </Dialog.Content>
-          <Dialog.Actions>
-            <BTs onPress={() => {
-              if (DateRaserved !== null && TimeReserved !== null) {
-                Alert.alert("Reserve Requested", `${DateRaserved} :  ${TimeReserved}`)
-               Hub.Invoke("Reservations", Reservation(DateRaserved +":"+ TimeReserved
-                  , "mostafaihab2019@gmail.com", CoWorkStore.id))
-                setVisible(false)
-              } else {
-                Alert.alert("Please Select both Date and Time")
-              }
-
-            }}>Confirm</BTs>
-
-            <BTs onPress={() => setVisible(false)}>Cancel</BTs>
-
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-
-    )
-  }
 
 
   const WorkSpaceImage = (props) => {
@@ -206,20 +91,17 @@ function WorkSpaceDetails(props) {
     CreateChannel() 
 
     Hub.StartHubConnection()
-    // hubConnection.start()
-
-    // hubConnection.on("Reservations", (data) => {
-             
-    // })
-
+ 
 
   },[])
+
+
 
 
   const RenderInfo = () => {
     return (
 
-      <>
+      <ScrollView>
         <Text style={[style.moreinfo]}>
           <MaterialCommunityIcons name={'phone'} size={20} color='green' />
           .     phone : 01111309569
@@ -268,7 +150,7 @@ function WorkSpaceDetails(props) {
           Notes is a notetaking app developed by Apple. It is provided on their iOS and macOS operating systems, the latter starting with OS X 10.8 Mountain Lion. It functions as a service for making short text notes, which can be synchronised between devices using
         </Text>
 
-      </>
+      </ScrollView>
     )
   }
 
@@ -281,11 +163,13 @@ function WorkSpaceDetails(props) {
     <ScrollView >
 
       <Provider>
+     
         <View>
           <View>
 
             <Animated.Image style={{ opacity: scalingInit, ...style.image }} source={{ uri: Detail.imageurl }} />
           </View>
+          {showInfo &&
           <View style={{ flexDirection: 'row', justifyContent: 'center', ...style.Container }}>
             <View>
               <Text style={[style.text, style.name, style.cards]}>
@@ -305,6 +189,7 @@ function WorkSpaceDetails(props) {
               <Text style={[style.info]}>
                 Space Info
               </Text>
+    
               <RenderInfo />
    
               
@@ -315,26 +200,31 @@ function WorkSpaceDetails(props) {
                 <FlatList horizontal data={Work} renderItem={item => <WorkSpaceImage img={item.item.imageurl} />} />
 
               </Card>
-
+           
             </View>
-          </View>
-          {ReservarionModal()}
+          </View>}
+          {/* {ReservarionModal()} */}
+        
+          <SwipeModal swipeModal={swipeModal}  setSwipeModal={setSwipeModal}  HubCon={Hub} />
+          
           <View style={style.button}>
+
+ 
+         
             <Button onPress={() => {
+          
+          setSwipeModal(!swipeModal)
+          showModal()
+    
 
 
-              // Notifi()
-              showModal()
+              // PushNotification.localNotification({
+              //   channelId: "test-channel",
+              //   title: "Light Space",
+              //   message: 'Reserved Succssefully',
 
 
-
-              PushNotification.localNotification({
-                channelId: "test-channel",
-                title: "Light Space",
-                message: 'Reserved Succssefully',
-
-
-              })
+              // })
 
             }} color={Color.primary} title={'Reserve Now'} />
           </View>

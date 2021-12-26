@@ -18,7 +18,7 @@ import { mdiAccountCircle } from '@mdi/js';
 import WorkSpaceDetails from './../screens/WorkSpaceDetails';
 import AppSettings from '../Settings/AppSettings'
 import MyProfile from '../Settings/MyProfile'
-
+import ReservationsScreem from '../screens/ReservationsScreem'
 
 
 enableScreens()
@@ -41,7 +41,7 @@ export const HeaderBase = (Title, icon) => {
   }
   return Header
 }
-
+const x ="dfsdfsdf"
 
 
 function NavDrawer() {
@@ -49,7 +49,8 @@ function NavDrawer() {
     <Drawer.Navigator initialRouteName="CoworkSpaces" >
       <Drawer.Screen name="MyProfile" component={MyProfile} options={{ ...HeaderBase("MyProfile", "user") }} />
       <Drawer.Screen name="App Setting" component={AppSettings} options={HeaderBase("App Setting", "settings")} />
-      <Drawer.Screen name="Logout" component={GoogleMap} options={HeaderBase("Logout", "log-out")} />
+      <Drawer.Screen name="Logout" component={()=>{}} options={HeaderBase("Logout", "log-out")} />
+      <Drawer.Screen name="All_Rreservations" component={ReservationsScreem} options={HeaderBase("My Reservations", "biscuit-clock")} />
     </Drawer.Navigator>
   )
 }
