@@ -45,9 +45,9 @@ function SwipeModal(props) {
 
         let model = {
     
-          Email: Email,
-          CoworkSpaceid: 'ba632f69-a90d-4fcd-41eb-08d9ad4681ed',
-          UserName: 'Mostafa',
+          Email: UserStore.email,
+          CoworkSpaceid: CoWorkStore.workSpaces.coworkSpaceId,
+          UserName: 'NotSet',
           TimeReservd: Date
     
         }
@@ -129,7 +129,7 @@ function SwipeModal(props) {
                                 if (DateRaserved !== null && TimeReserved !== null) {
                                     Alert.alert("Reserve Requested", `${DateRaserved} :  ${TimeReserved}`)
                                    props.HubCon.Invoke("Reservations", Reservation(DateRaserved +":"+ TimeReserved
-                                      , "mostafaihab2019@gmail.com", CoWorkStore.id))
+                                      , UserStore.email, CoWorkStore.id))
                                     setVisible(false)
                                   } else {
                                     Alert.alert("Please Select both Date and Time")

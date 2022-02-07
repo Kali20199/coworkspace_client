@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import { View,Text,FlatList } from 'react-native';
 import Reservation from  '../Widgets/Reservation'
 import { Provider} from 'react-native-paper';
@@ -8,19 +8,22 @@ function ReservationsScreem() {
 
     const [visable, setVisable] = React.useState(true)
     const Reservations= Work;
-
+  
+    const MyRenders = useCallback(
+        ({item}) => <Reservation Reservations={Reservations} itemData={item}/>
+    ,[])
     return (
         <Provider>
-
+ 
           
 
-            <FlatList data={Reservations} renderItem={item=>    <Reservation Reservations={Reservations} itemData={item}/>}/>
+            <FlatList data={Reservations} renderItem={ MyRenders}/>
           
 
             {/* <Text>
                 My Reservations
-            </Text> */}
-        </Provider>
+            </Text> */} 
+        </Provider> 
     )
 }
 

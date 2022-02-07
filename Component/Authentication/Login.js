@@ -54,7 +54,7 @@ function Login(props) {
 
   const handleInput = (event) => {
     const { nativeEvent } = event
-    const Type = event._targetInst.memoizedProps.nativeID
+    const Type = event._targetInst.memoizedProps.nativeID 
     Cred[Type] = nativeEvent.text
 
   }

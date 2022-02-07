@@ -1,12 +1,13 @@
 import { makeAutoObservable, reaction, runInAction } from 'mobx'
 import agent from '../agent/agent'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Alert } from 'react-native';
+import { Alert, Platform } from 'react-native';
 import 'react-native-gesture-handler';
 
 
 export const PERSISTENCE_KEY = 'UserToekn'
 export const PROFILEPIC_KEY = 'PROFILEPIC_KEY'
+export const UserInfo = "UserInfo"
 
 export default class UserStore {
     Creds = {
@@ -18,6 +19,9 @@ export default class UserStore {
 
 
     }
+
+    User = null
+    email = null
     loading = false
     token = null
     ProfilePic =  null
@@ -40,10 +44,37 @@ export default class UserStore {
 
     }
 
+    GetUserEmail=async()=>{
+      
+        runInAction(async () => {
+            var user = await AsyncStorage.getItem(UserInfo, (error) => { 
+              
+            }).catch(res=>{
+                this.User= res
+            })
+            if(user!==null){
+            this.email = user
+        }else{
+            //later On
+        }
+        })
+    }
+
     Login = async(Cred) => {
 
-      await  agent.Account.Login(Cred).then(() => { this.GetuserToken(Cred.email, Cred.password) })
-        agent.Account.SayHello()
+    
+      await  agent.Account.Login(Cred).then(async(res) => { 
+          var userData = res.data
+          // Persist UserEmail
+          await AsyncStorage.setItem(UserInfo, userData.email).then(()=>{
+            this.email = userData.email
+          })
+        
+          
+          
+          
+        this.GetuserToken(Cred.email, Cred.password) })
+      
 
 
     }
@@ -61,6 +92,8 @@ export default class UserStore {
 
         })
     }
+
+
 
 
     GetuserToken = async (email, pass) => {
@@ -83,9 +116,24 @@ export default class UserStore {
             }
 
             //   this.token = JSON.parse(token)
-            this.token = Token.data.token
+            this.token = Token.data.token 
             return this.token
+ 
+        })
+    }
 
+
+    Logout= async()=>{
+        runInAction(async()=>{
+            await AsyncStorage.setItem(PERSISTENCE_KEY,undefined)
+        })
+    }
+ 
+    CheckAuth = async()=>{
+        runInAction(async()=>{
+        await agent.Account.CheckAuth().catch((e)=>{
+            Alert.alert("Mobx Exception")
+            return e}) 
         })
     }
 
@@ -102,10 +150,18 @@ export default class UserStore {
         })
     }
     ChangeImage = async (image) => {
-
+        let formData = new FormData();
+        var name = image.uri.split('/').pop()
+        formData.append('file',{
+            uri:Platform.OS == "android" ? image.uri  : image.uri.replace('file://',""),
+            name:name,
+            type:'image/jpg'
+        })
+    
+        await agent.Account.SetProfuilePic(formData)
         runInAction(async () => {
             this.ProfilePic = image
-            
+      
             await AsyncStorage.setItem(PROFILEPIC_KEY, JSON.stringify(this.ProfilePic)).catch((err)=>{
 
                 Alert.alert(err)
@@ -113,7 +169,7 @@ export default class UserStore {
 
             
         }, [])
-    }
+    } 
 
     GetImagPice = async () => {
         runInAction(async () => {
@@ -128,5 +184,5 @@ export default class UserStore {
 
 
 
-
+ 
 }

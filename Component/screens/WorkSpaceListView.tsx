@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList, ImageBackground, TouchableOpacity, Button } from 'react-native';
+import { View, Text, FlatList, ImageBackground, TouchableOpacity, Button, RefreshControl, Dimensions, Alert } from 'react-native';
 import { Work } from '../../constant/Application';
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { observer } from 'mobx-react-lite';
-import { store } from '../../store/store';
+import {  useStore } from '../../store/store';
 import Searchbar from '../Widgets/serchBar'
 import Color from '../../constant/Color';
-
+import { List, ActivityIndicator, Colors, Switch } from 'react-native-paper';
 
 
 
@@ -15,20 +15,32 @@ import Color from '../../constant/Color';
 
 
 const LightSpaceListItem = (props) => {
-    const { CoWorkStore } = store
     const { item } = props
-    const { name, id, imageurl, tables } = item.item
+    const { name, id, mainImage, timeColosed } = item.item
+    const { CoWorkStore:{getSpaceByid,setCoworkOptions} } = useStore()
+    const NavigateDetail=async()=>{
+        setCoworkOptions(name)
+         await   getSpaceByid(id,props)
+     
+              
+        
+      
+    }
+
+
+
+   
     const x = 3;
     return (
 
         <View style={style.list}>
 
             <TouchableOpacity style={style.item_container} onPress={() => {
-                CoWorkStore.setWorkSpaceOptions(name, id, imageurl, tables)
-                props.nav.navigate('Ink')
+                     NavigateDetail()
+    
             }}>
                 <View style={{ width: '100%' }}>
-                    <ImageBackground style={style.image} source={{ uri: imageurl }}>
+                    <ImageBackground style={style.image} source={{ uri: mainImage }}>
                         <View style={style.ImgaeBack}>
                             <View style={style.Info}>
                                 <Text style={style.Name}>
@@ -37,13 +49,13 @@ const LightSpaceListItem = (props) => {
                                 <View style={style.lowerSec}>
                                     <Text style={style.open}>
                                         Open
-                                    </Text>
+                                    </Text> 
                                     <Text style={style.City}>
                                         Alexandria
                                     </Text>
                                     <Button onPress={() => {
-                                        CoWorkStore.setWorkSpaceOptions(name, id, imageurl, tables)
-                                        props.nav.navigate('Ink')
+                                        // CoWorkStore.setWorkSpaceOptions(name, id, mainImage)
+                                        // props.nav.navigate('Ink')
                                     }} color={Color.Orange} title={'Reserve Now'} />
                                 </View>
                             </View>
@@ -63,14 +75,28 @@ const LightSpaceListItem = (props) => {
 
 
 function WorkSpaceListView(props) {
-
+    const windowHeight = Dimensions.get('window').height;
 
     const [value, setValue] = useState('')
     const [sortArr, setSortedArr] = useState([])
-
+    const { CoWorkStore: { getAllSpacesCard, LightSpaceCard } } = useStore()
+    const [refreshing, setRefreshing] = useState(false);
+    const [Init, setInit] = useState(true);
+    const wait = (timeout) => {
+        return new Promise(resolve => setTimeout(resolve, timeout));
+    }
+    const onRefresh = React.useCallback(async()  => {
+        setRefreshing(true);
+       await getAllSpacesCard()
+        setRefreshing(false);
+    }, []);
 
     useEffect(() => {
         setSortedArr(Work)
+        setTimeout(()=>setInit(false),3000)
+        if (LightSpaceCard.length <= 1) {
+            getAllSpacesCard()
+        }
     }, [])
 
     const ChangeHandler = (event) => {
@@ -78,7 +104,7 @@ function WorkSpaceListView(props) {
 
         setValue(text)
 
-
+       
         value == "" ? setSortedArr(Work) : setSortedArr([])
         const arr = []
         Work.map((index) => {
@@ -92,12 +118,40 @@ function WorkSpaceListView(props) {
 
 
     return (
-        <View>
-            <View style={style.serbarView}>
-                <Searchbar value={value} ChangeHandler={ChangeHandler} />
-            </View>
-            <FlatList style={{ marginBottom: 50 }} numColumns={1} data={sortArr} keyExtractor={item => item.id} renderItem={item => <LightSpaceListItem item={item} nav={props.navigation} />} />
+        <View  >
+            {!(LightSpaceCard.length == 1) ?
+                <ScrollView refreshControl={<RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                />} >
+                    <View style={style.serbarView}>
+                        <Searchbar value={value} ChangeHandler={ChangeHandler} />
+                    </View>
 
+                    <ActivityIndicator style={{position:'absolute', opacity: Init? 1: 0,top:(windowHeight/2)-60}}  animating={true} color={Colors.red800} />
+
+                    <FlatList style={{ marginBottom: 50 }} numColumns={1} data={LightSpaceCard} keyExtractor={item => item.id} renderItem={item => <LightSpaceListItem item={item} navigation={props.navigation} />} />
+                </ScrollView>
+
+                : <View style={{ flexDirection: 'row', justifyContent: 'center', height: '100%' }} >
+      
+                       <ActivityIndicator style={{position:'absolute', opacity: Init? 1: 0,top:(windowHeight/2)-60}}  animating={true} color={Colors.red800} />
+                       <View  style={{position:'absolute', opacity: !Init? 1: 0,top:(windowHeight/2)-60}}>
+                       {Init==false ? 
+                       <View>
+                       <Text style={{color:'red',fontSize:20,fontWeight:'900'}}>Sorry No InterNet Connection!</Text>
+                       <Text style={{color:'green',fontWeight:'900'}}>Swipe Screen to Refresh</Text>
+                       </View>
+                       : null}  
+                       </View>
+                    <ScrollView refreshControl={<RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                    />}/>
+                 
+                     
+                  
+                </View>}
         </View>
     )
 }
@@ -109,6 +163,7 @@ const style = StyleSheet.create({
     serbarView: {
         flexDirection: 'row',
         justifyContent: 'center',
+
         width: '100%'
 
     },
@@ -180,9 +235,9 @@ const style = StyleSheet.create({
 
     },
     open: {
-        
-        color:'#08b03d',
-        fontWeight:'900',
+
+        color: '#08b03d',
+        fontWeight: '900',
         fontSize: 21,
 
 

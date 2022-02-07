@@ -20,18 +20,20 @@ function MyProfile() {
 
     const OpenCamera = async () => {
 
-        await launchCamera({ mediaType: 'photo' }, ({ assets }) => {
+        await launchCamera({includeBase64:true, quality:1,mediaType: 'photo'}, ({ assets }) => {
 
-      
+            try{
             UserStore.ChangeImage(assets[0])
-      
+            } catch(e){
+
+            }
           
         });
     }
 
     const SelectFromLibarary = async () => {
 
-        await launchImageLibrary({ mediaType: 'photo' }, ({ assets }) => {
+        await launchImageLibrary({ quality:1 ,mediaType: 'photo' }, ({ assets }) => {
         
             UserStore.ChangeImage(assets[0])
         })

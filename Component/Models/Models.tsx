@@ -6,5 +6,15 @@ export class GeoLocation {
     constructor(){
 
     }
+    
 
+}
+
+
+export interface WorkSpaceCard{
+
+    id:string,
+    name:string,
+    mainImage:string,
+    timeColosed:Date
 }

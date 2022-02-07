@@ -15,7 +15,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 
 function ReservationWidget(props) {
-    const { id, name, imageurl, tabels } = props.itemData.item
+    const { id, name, imageurl, tabels } = props.itemData
     const Reservations = props.Reservations
     const [visable, setVisable] = React.useState(false)
     const CanceDialog = () => {

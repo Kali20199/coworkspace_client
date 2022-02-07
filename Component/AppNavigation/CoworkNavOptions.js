@@ -19,7 +19,7 @@ import WorkSpaceDetails from './../screens/WorkSpaceDetails';
 import AppSettings from '../Settings/AppSettings'
 import MyProfile from '../Settings/MyProfile'
 import ReservationsScreem from '../screens/ReservationsScreem'
-
+import ReLogged from '../screens/ReLogged'
 
 enableScreens()
 
@@ -44,12 +44,12 @@ export const HeaderBase = (Title, icon) => {
 const x ="dfsdfsdf"
 
 
-function NavDrawer() {
+function NavDrawer(props) {
   return (
     <Drawer.Navigator initialRouteName="CoworkSpaces" >
       <Drawer.Screen name="MyProfile" component={MyProfile} options={{ ...HeaderBase("MyProfile", "user") }} />
       <Drawer.Screen name="App Setting" component={AppSettings} options={HeaderBase("App Setting", "settings")} />
-      <Drawer.Screen name="Logout" component={()=>{}} options={HeaderBase("Logout", "log-out")} />
+      <Drawer.Screen name="Logout" component={ReLogged} options={{ ...HeaderBase("Logout", "log-out"),headerShown:false}  } />
       <Drawer.Screen name="All_Rreservations" component={ReservationsScreem} options={HeaderBase("My Reservations", "biscuit-clock")} />
     </Drawer.Navigator>
   )
@@ -74,7 +74,7 @@ function BtoomNav() {
 
 
 
-const CoworkNav = () => {
+const CoworkNav = (porps) => {
   const { CoWorkStore } = useStore()
   return (
 
@@ -83,9 +83,6 @@ const CoworkNav = () => {
       <Stack.Screen name="Login" component={Login} options={HeaderBase("Login")} />
       <Stack.Screen name="Register" component={BtoomNav} options={{ headerShown: false }} />
       <Stack.Screen name={'Ink'} component={WorkSpaceDetails} options={{ ...HeaderBase(CoWorkStore.name) }} />
-
-
-
       <Stack.Screen name="New1" component={Register} options={{ headerShown: false }} />
       <Stack.Screen name="New2" component={Register} options={{ headerShown: false }} />
       <Stack.Screen name="New3" component={Register} options={{ headerShown: false }} />

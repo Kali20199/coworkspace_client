@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Button, Alert, Animated, Easing, Dimensions } from 'react-native'
+import { View, Text, StyleSheet, Image, Button, Alert, Animated, Easing, Dimensions ,RefreshControl} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useStore } from '../../store/store'
 import Color from '../../constant/Color'
@@ -15,6 +15,7 @@ import SwipeUpDownModal from 'react-native-swipe-modal-up-down';
 import TIMEADD from '../../assets/time.png'
 import DATE from '../../assets/date.png'
 import SwipeModal from '../Modals/SwipeModal'
+
 import * as signalR from '@microsoft/signalr';
 
 
@@ -42,8 +43,8 @@ function WorkSpaceDetails(props) {
     outputRange: [0, 4]
   })
 
-  const { CoWorkStore, UserStore,Hub} = useStore()
-  
+  const {  UserStore,Hub} = useStore()
+  const { CoWorkStore} = useStore()
 
   const [swipeModal, setSwipeModal] = useState(false);
 
@@ -91,6 +92,7 @@ function WorkSpaceDetails(props) {
     CreateChannel() 
 
     Hub.StartHubConnection()
+   
  
 
   },[])
@@ -104,34 +106,34 @@ function WorkSpaceDetails(props) {
       <ScrollView>
         <Text style={[style.moreinfo]}>
           <MaterialCommunityIcons name={'phone'} size={20} color='green' />
-          .     phone : 01111309569
+          .     phone : {CoWorkStore?.workSpaces.phone}
         </Text>
 
         <Text style={[style.moreinfo]}>
           <MaterialCommunityIcons name={'users'} size={20} color='blue' />
-          .     Owner : Mostafa ihab
+          .     Owner : {CoWorkStore.workSpaces.name}
         </Text>
         <Text style={[style.moreinfo]}>
           <MaterialCommunityIcons name={'clock'} size={20} color='green' />
-          .     Time Open : 8:30 AM
+          .     Time Open : {CoWorkStore.workSpaces.timeOpen}
         </Text>
         <Text style={[style.moreinfo]}>
           <FontAwesome5 name={"window-close"} size={20} color='red' />
-          .    Time Close : 10 PM
+          .    Time Close : {CoWorkStore.workSpaces.timeClosed}
         </Text>
 
 
         <Text style={[style.moreinfo]}>
           <FontAwesome5 name={"table"} size={20} color='brown' />
-          .     Tables : 12
+          .     Tables :  {CoWorkStore.workSpaces.tables}
         </Text>
 
         <Text style={[style.moreinfo]}>
           <FontAwesome5 name={"person-booth"} size={20} color='green' />
-          .     Private Rooms : 5
+          .     Private Rooms :  {CoWorkStore.workSpaces.privateRooms} 
         </Text>
 
-        <Text style={[style.moreinfo]}>
+        <Text style={[style.moreinfo]}> 
           <FontAwesome5 name={"coins"} size={20} color='yellow' />
           .     TablePrice : 20 EGP
         </Text>
@@ -157,33 +159,42 @@ function WorkSpaceDetails(props) {
 
 
   const pan = React.useRef(new Animated.ValueXY()).current;
-  const Detail = CoWorkStore
-  { setTimeout(() => <RenderInfo />, 1000) }
+  const {workSpaces} = CoWorkStore 
+
+  const getMainImage=(workSpaces)=>{
+    const MainImg = workSpaces.images.find(x=>x.isMain == true).url; 
+    return MainImg
+}
+
+  const MainImg = getMainImage(workSpaces) 
+    
+
+
   return (
     <ScrollView >
 
       <Provider>
      
         <View>
-          <View>
+          <View> 
 
-            <Animated.Image style={{ opacity: scalingInit, ...style.image }} source={{ uri: Detail.imageurl }} />
+            <Animated.Image style={{ opacity: scalingInit, ...style.image }} source={{ uri: MainImg }} />
           </View>
           {showInfo &&
           <View style={{ flexDirection: 'row', justifyContent: 'center', ...style.Container }}>
             <View>
               <Text style={[style.text, style.name, style.cards]}>
-                {Detail.name}
+                {workSpaces.name}
               </Text>
 
 
               <Animated.Text style={[style.text, style.cards]}>
-                Free Tables xx: {Detail.tables}
+                Free Tables : {workSpaces.tables}
               </Animated.Text>
 
 
               <Animated.Text style={[style.text, style.cards]}>
-                city : {Detail.city}
+                city : {workSpaces.city}
               </Animated.Text>
 
               <Text style={[style.info]}>
@@ -197,7 +208,9 @@ function WorkSpaceDetails(props) {
 
               <Card> 
                 <Card.Title>Space View</Card.Title>
-                <FlatList horizontal data={Work} renderItem={item => <WorkSpaceImage img={item.item.imageurl} />} />
+                <FlatList horizontal data={workSpaces.images} renderItem={item =>
+                  
+                  <WorkSpaceImage img={item.item.url} />} />
 
               </Card>
            
@@ -268,7 +281,7 @@ const style = StyleSheet.create({
 
   },
   image: {
-    height: 200
+    height: 250
   },
 
   button: {

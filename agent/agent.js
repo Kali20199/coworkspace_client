@@ -10,16 +10,20 @@ axios.interceptors.response.use(async(res)=>{
    
 
    return res
-},(error)=>{
-    const {data,status} = error.response
-    const message = error.response.message
-  //  Alert.alert("Failed",message.toString())
-   
-  
-})
+},(error)=>{ 
+    // const {data,status} = error.response
+    // const message = error.response.message 
+    switch(error.response.status){
+        case 401: 
+            Alert.alert("You Need to Be Logged Please Re LoggedIn")
+
+        default : return   
+       
+    }
+})  
 
 
-axios.interceptors.request.use(async(request)=>{
+axios.interceptors.request.use(async(request)=>{ 
     //const UserStore =store.UserStore
     const token= await AsyncStorage.getItem(PERSISTENCE_KEY,(error)=>{})       
 
@@ -30,12 +34,8 @@ axios.interceptors.request.use(async(request)=>{
 
 },(error)=>{
  
-    switch(error.response.status){
-        case 401:
-            Alert.alert("You Need to Be Loged In to use This App")
-
-        default : return   Alert.alert("App Error")
-    }
+    
+    
 })
 
 
@@ -44,14 +44,18 @@ const Account = {
     GetToken:(Creds)=> axios.post('/Account/GetUser',Creds) ,
     SayHello:()=>axios.get('/Account/hello'),
     Login:(Cred)=>axios.post('/Account/login',Cred),
-    UploadProfilePic:(image)=>axios.post('/Account/UploadImage',image)
-    
+    UploadProfilePic:(image)=>axios.post('/Account/UploadImage',image),
+    CheckAuth:()=>axios.get('Account/CheckAuth'),
+    SetProfuilePic:(image)=>axios.post('Account/SetProfPic',image)
+  
     
 
 }
 
 const WorkSpace = {
-    FetchAllSpaceAround:()=>axios.get('/User/GetSpaceAound')
+    FetchAllSpaceAround:()=>axios.get('/User/GetSpaceAound'),
+    getSpacesList:()=>axios.get('User/getSpacesList'),
+    getSpaceByid:(id)=>axios.post('User/GetSpaceById',{id})
 }
 
 
