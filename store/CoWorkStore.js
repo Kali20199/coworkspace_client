@@ -10,16 +10,16 @@ import WorkSpaceCard from '../Component/Models/Models'
 export default class CoWorkStore {
 
     name = 'WorkSpace'
-    phone = null
+    phone = null 
     tables = 0
     city = 'Alexamdria'
     id = null
-    imageurl = ''
+    imageurl = '' 
     location = undefined
     workSpaces=  undefined
     LightSpaceCard = Array(WorkSpaceCard)
 
-
+ 
     constructor() {
         makeAutoObservable(this)
 
@@ -57,8 +57,13 @@ export default class CoWorkStore {
             runInAction(async()=>{
                 try{
                 var Spaces = await agent.WorkSpace.getSpacesList().then(res => {
+                    try{
                     this.LightSpaceCard = res.data
                     const spaces = res.data;
+                    }catch(e){
+                        this.LightSpaceCard = Array(WorkSpaceCard)
+                    }
+                    
                 
               
             })

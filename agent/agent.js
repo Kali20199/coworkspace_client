@@ -13,13 +13,14 @@ axios.interceptors.response.use(async(res)=>{
 },(error)=>{ 
     // const {data,status} = error.response
     // const message = error.response.message 
-    switch(error.response.status){
-        case 401: 
-            Alert.alert("You Need to Be Logged Please Re LoggedIn")
+    // switch(error.response.status){
+    //     case 401: 
+    //         Alert.alert("You Need to Be Logged Please Re LoggedIn")
 
-        default : return   
+    //     default : return   
        
-    }
+    // }
+    return error
 })  
 
 

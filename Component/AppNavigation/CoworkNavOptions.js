@@ -1,25 +1,24 @@
 import Color from "../../constant/Color"
-import React from "react"
-import { StyleSheet, Text } from 'react-native'
+import React from "react";
+import { StyleSheet, Text } from 'react-native';
 import { observer } from 'mobx-react-lite';
 import { enableScreens } from 'react-native-screens';
 import Register from '../../Component/Authentication/Register'
 import MaterialCommunityIcons from 'react-native-vector-icons/Feather'
-import FontAwesome from 'react-native-vector-icons/FontAwesome'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import GoogleMap from '../../Component/GoogleService/GoogleMap'
-import Login from '../../Component/Authentication/Login'
-import { App_Name } from '../../constant/Application'
+import GoogleMap from '../../Component/GoogleService/GoogleMap';
+import Login from '../../Component/Authentication/Login';
+import { App_Name } from '../../constant/Application';
 import WorkSpaceListView from '../screens/WorkSpaceListView';
 import { useStore } from "../../store/store";
-import { mdiAccountCircle } from '@mdi/js';
 import WorkSpaceDetails from './../screens/WorkSpaceDetails';
-import AppSettings from '../Settings/AppSettings'
-import MyProfile from '../Settings/MyProfile'
-import ReservationsScreem from '../screens/ReservationsScreem'
-import ReLogged from '../screens/ReLogged'
+import AppSettings from '../Settings/AppSettings';
+import MyProfile from '../Settings/MyProfile';
+import ReservationsScreem from '../screens/ReservationsScreem';
+import ReLogged from '../screens/ReLogged';
+
 
 enableScreens()
 
@@ -34,6 +33,8 @@ export const HeaderBase = (Title, icon) => {
 
     headerTintColor: 'white',
     headerStyle: { backgroundColor: Color.primary },
+ 
+
     headerCenter: () => <Text style={style.Text}>{Title}</Text>,
     tabBarIcon: () => <MaterialCommunityIcons name={icon} size={20} color='black' />,
     headerTitle: () => <Text style={style.Text}>{Title}</Text>,
@@ -64,7 +65,19 @@ function BtoomNav() {
 
   // Ohter Screen When Login
   return (
-    <Tab.Navigator  >
+    <Tab.Navigator   
+    tabBarOptions={{
+      activeTintColor: '#ffff',
+      inactiveTintColor: 'lightgray',
+      activeBackgroundColor: '#5c0759',
+      inactiveBackgroundColor: Color.primary,
+          style: {
+                backgroundColor: '#CE4418',
+                paddingBottom: 3
+          }
+   }}
+    
+    >
       <Tab.Screen name={App_Name} component={WorkSpaceListView} options={{ headerShown: true, ...HeaderBase(App_Name, "home") }} />
       <Tab.Screen name="Map" component={GoogleMap} options={{ headerShown: false, ...HeaderBase("Map", "map") }} />
       <Tab.Screen name="Settings" component={NavDrawer} options={{ headerShown: false, tabBarBadge: 3, valueOf, ...HeaderBase("Settings", "settings") }} />
@@ -74,14 +87,16 @@ function BtoomNav() {
 
 
 
-const CoworkNav = (porps) => {
-  const { CoWorkStore } = useStore()
+const CoworkNav = (props) => {
+  const { CoWorkStore,UserStore } = useStore()
+
   return (
 
 
     <Stack.Navigator >
       <Stack.Screen name="Login" component={Login} options={HeaderBase("Login")} />
-      <Stack.Screen name="Register" component={BtoomNav} options={{ headerShown: false }} />
+      <Stack.Screen name="Dashboard" component={BtoomNav} options={{ headerShown: false }} />
+      <Stack.Screen name="Register" component={Register}  options={{ ...HeaderBase("Register") }} />
       <Stack.Screen name={'Ink'} component={WorkSpaceDetails} options={{ ...HeaderBase(CoWorkStore.name) }} />
       <Stack.Screen name="New1" component={Register} options={{ headerShown: false }} />
       <Stack.Screen name="New2" component={Register} options={{ headerShown: false }} />

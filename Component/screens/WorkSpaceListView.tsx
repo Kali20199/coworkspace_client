@@ -73,13 +73,13 @@ const LightSpaceListItem = (props) => {
 
 
 
-
+ 
 function WorkSpaceListView(props) {
     const windowHeight = Dimensions.get('window').height;
 
     const [value, setValue] = useState('')
     const [sortArr, setSortedArr] = useState([])
-    const { CoWorkStore: { getAllSpacesCard, LightSpaceCard } } = useStore()
+    const { CoWorkStore: { getAllSpacesCard, LightSpaceCard },UserStore:{token}} = useStore()
     const [refreshing, setRefreshing] = useState(false);
     const [Init, setInit] = useState(true);
     const wait = (timeout) => {
@@ -93,11 +93,11 @@ function WorkSpaceListView(props) {
 
     useEffect(() => {
         setSortedArr(Work)
-        setTimeout(()=>setInit(false),3000)
-        if (LightSpaceCard.length <= 1) {
+      
+        if (LightSpaceCard.length <= 1) { 
             getAllSpacesCard()
         }
-    }, [])
+    }, [token])
 
     const ChangeHandler = (event) => {
         const { text } = event.nativeEvent
@@ -116,8 +116,16 @@ function WorkSpaceListView(props) {
 
 
 
-
+{ 
     return (
+        !LightSpaceCard ? <View>
+                <ScrollView refreshControl={<RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh} 
+                />} >
+               <ActivityIndicator style={{position:'absolute', opacity: Init? 1: 0,top:(windowHeight/2)-60}}  animating={true} color={Colors.red800} />
+           </ScrollView>
+        </View> :
         <View  >
             {!(LightSpaceCard.length == 1) ?
                 <ScrollView refreshControl={<RefreshControl
@@ -130,10 +138,10 @@ function WorkSpaceListView(props) {
 
                     <ActivityIndicator style={{position:'absolute', opacity: Init? 1: 0,top:(windowHeight/2)-60}}  animating={true} color={Colors.red800} />
 
-                    <FlatList style={{ marginBottom: 50 }} numColumns={1} data={LightSpaceCard} keyExtractor={item => item.id} renderItem={item => <LightSpaceListItem item={item} navigation={props.navigation} />} />
+                    <FlatList style={{ marginBottom: 0 }} numColumns={1} data={LightSpaceCard} keyExtractor={item => item.id} renderItem={item => <LightSpaceListItem item={item} navigation={props.navigation} />} />
                 </ScrollView>
 
-                : <View style={{ flexDirection: 'row', justifyContent: 'center', height: '100%' }} >
+                : <View style={{ flexDirection: 'row', justifyContent: 'center', height: '100%' }}>
       
                        <ActivityIndicator style={{position:'absolute', opacity: Init? 1: 0,top:(windowHeight/2)-60}}  animating={true} color={Colors.red800} />
                        <View  style={{position:'absolute', opacity: !Init? 1: 0,top:(windowHeight/2)-60}}>
@@ -153,7 +161,9 @@ function WorkSpaceListView(props) {
                   
                 </View>}
         </View>
+
     )
+                    }
 }
 
 

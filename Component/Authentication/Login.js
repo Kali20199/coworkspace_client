@@ -61,11 +61,9 @@ function Login(props) {
 
   const Submit = () => {
    
-    UserStore.Login(Cred)
+    UserStore.Login(Cred,props)
 
   }
-
-
   return (
     <ScrollView>
       <View style={style.Page}>

@@ -19,7 +19,7 @@ export default class UserStore {
 
 
     }
-
+    Logged=false
     User = null
     email = null
     loading = false
@@ -60,23 +60,37 @@ export default class UserStore {
         })
     }
 
-    Login = async(Cred) => {
+    Login = (Cred,props) => {
 
-    
+    runInAction(async()=>{
       await  agent.Account.Login(Cred).then(async(res) => { 
           var userData = res.data
+          if(res ==  undefined){
+              Alert.alert("login Failed")
+          }else{
+            var userData = res.data
           // Persist UserEmail
           await AsyncStorage.setItem(UserInfo, userData.email).then(()=>{
             this.email = userData.email
-          })
+            this.Logged = true
+            this.GetuserToken(Cred.email, Cred.password) 
+            props.navigation.navigate('Dashboard') 
+         
+           
+          }
+          )
+        
         
           
           
-          
-        this.GetuserToken(Cred.email, Cred.password) })
+     
+      
+          }
+    
+    })
       
 
-
+},[])
     }
 
     Register = async (Cred) => {
