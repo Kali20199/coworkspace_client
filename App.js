@@ -14,6 +14,7 @@ const App = () => {
 
  const FetchUser=async()=>{
   await UserStore.GetUserEmail()
+  await UserStore.GetPersitntToken()
  }
 
 useEffect(async()=>{

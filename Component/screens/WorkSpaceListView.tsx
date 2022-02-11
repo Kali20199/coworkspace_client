@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList, ImageBackground, TouchableOpacity, Button, RefreshControl, Dimensions, Alert } from 'react-native';
+import { View, Text, FlatList, ImageBackground, TouchableOpacity, Button, RefreshControl, Dimensions, Alert, BackHandler } from 'react-native';
 import { Work } from '../../constant/Application';
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -82,33 +82,32 @@ function WorkSpaceListView(props) {
     const { CoWorkStore: { getAllSpacesCard, LightSpaceCard },UserStore:{token}} = useStore()
     const [refreshing, setRefreshing] = useState(false);
     const [Init, setInit] = useState(true);
-    const wait = (timeout) => {
-        return new Promise(resolve => setTimeout(resolve, timeout));
-    }
+
     const onRefresh = React.useCallback(async()  => {
         setRefreshing(true);
        await getAllSpacesCard()
         setRefreshing(false);
     }, []);
 
-    useEffect(() => {
-        setSortedArr(Work)
-      
+    useEffect(() => { 
+       
+        setSortedArr(LightSpaceCard)
         if (LightSpaceCard.length <= 1) { 
             getAllSpacesCard()
         }
-    }, [token])
+    }, [token,LightSpaceCard])
 
     const ChangeHandler = (event) => {
         const { text } = event.nativeEvent
 
         setValue(text)
 
-       
-        value == "" ? setSortedArr(Work) : setSortedArr([])
+
+        value == "" ? setSortedArr(LightSpaceCard) : setSortedArr([])
         const arr = []
-        Work.map((index) => {
-            if (index.name.toUpperCase().includes(text.toUpperCase())) { arr.push(index) }
+        LightSpaceCard.map((index) => {
+            if (index.name.toUpperCase().includes(text.toUpperCase())) { 
+                arr.push(index) }
         })
         setSortedArr(arr)
         const x = 3;
@@ -118,27 +117,21 @@ function WorkSpaceListView(props) {
 
 { 
     return (
-        !LightSpaceCard ? <View>
-                <ScrollView refreshControl={<RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh} 
-                />} >
-               <ActivityIndicator style={{position:'absolute', opacity: Init? 1: 0,top:(windowHeight/2)-60}}  animating={true} color={Colors.red800} />
-           </ScrollView>
-        </View> :
-        <View  >
-            {!(LightSpaceCard.length == 1) ?
+     
+        <View>
+             <Searchbar value={value} ChangeHandler={ChangeHandler} />
+            {(sortArr[0] !== undefined) ?
                 <ScrollView refreshControl={<RefreshControl
                     refreshing={refreshing}
                     onRefresh={onRefresh}
                 />} >
                     <View style={style.serbarView}>
-                        <Searchbar value={value} ChangeHandler={ChangeHandler} />
+                     
                     </View>
 
                     <ActivityIndicator style={{position:'absolute', opacity: Init? 1: 0,top:(windowHeight/2)-60}}  animating={true} color={Colors.red800} />
 
-                    <FlatList style={{ marginBottom: 0 }} numColumns={1} data={LightSpaceCard} keyExtractor={item => item.id} renderItem={item => <LightSpaceListItem item={item} navigation={props.navigation} />} />
+                    <FlatList style={{ marginBottom: 0 }} numColumns={1} data={sortArr} keyExtractor={item => item.id} renderItem={item => <LightSpaceListItem item={item} navigation={props.navigation} />} />
                 </ScrollView>
 
                 : <View style={{ flexDirection: 'row', justifyContent: 'center', height: '100%' }}>

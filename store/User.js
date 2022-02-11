@@ -19,12 +19,12 @@ export default class UserStore {
 
 
     }
-    Logged=false
+    Logged = false
     User = null
     email = null
     loading = false
     token = null
-    ProfilePic =  null
+    ProfilePic = null
     UserLocation = {
         latitude: 0,
         longitude: 0,
@@ -44,53 +44,51 @@ export default class UserStore {
 
     }
 
-    GetUserEmail=async()=>{
-      
+    GetUserEmail = async () => {
+
         runInAction(async () => {
-            var user = await AsyncStorage.getItem(UserInfo, (error) => { 
-              
-            }).catch(res=>{
-                this.User= res
+            var user = await AsyncStorage.getItem(UserInfo, (error) => {
+
+            }).catch(res => {
+                this.User = res
             })
-            if(user!==null){
-            this.email = user
-        }else{
-            //later On
-        }
+            if (user !== null) {
+                this.email = user
+            } else {
+                //later On
+            }
         })
     }
 
-    Login = (Cred,props) => {
+    Login = (Cred, props) => {
 
-    runInAction(async()=>{
-      await  agent.Account.Login(Cred).then(async(res) => { 
-          var userData = res.data
-          if(res ==  undefined){
-              Alert.alert("login Failed")
-          }else{
-            var userData = res.data
-          // Persist UserEmail
-          await AsyncStorage.setItem(UserInfo, userData.email).then(()=>{
-            this.email = userData.email
-            this.Logged = true
-            this.GetuserToken(Cred.email, Cred.password) 
-            props.navigation.navigate('Dashboard') 
-         
-           
-          }
-          )
-        
-        
-          
-          
-     
-      
-          }
-    
-    })
-      
+        runInAction(async () => {
+            await agent.Account.Login(Cred).then(async (res) => {
+                var userData = res.data
+                if (res == undefined) {
+                    Alert.alert("login Failed")
+                } else {
+                    var userData = res.data
+                    // Persist UserEmail
+                    await AsyncStorage.setItem(UserInfo, userData.email)
+                    this.email = userData.email
+                    this.Logged = true
+                    this.token = res.data.token
+                    await AsyncStorage.setItem(PERSISTENCE_KEY, this.token)
+                    props.navigation.navigate('Dashboard')
 
-},[])
+                }
+            }).catch(() => {
+                Alert.alert("login Failed")
+            })
+        }, [])
+    }
+
+    FaceBookLogin = async (profile) => {
+        runInAction = async () => {
+            await agent.Account.FBLogin(profile)
+        }
+
     }
 
     Register = async (Cred) => {
@@ -102,52 +100,37 @@ export default class UserStore {
             //  await agent.Account.Register(Cred)
             this.loading = false
 
-            this.GetuserToken(Cred.email, password)
-
         })
     }
 
 
 
 
-    GetuserToken = async (email, pass) => {
+    GetPersitntToken = async = () => {
+
         runInAction(async () => {
-            Cred = {
-                email: email,
-                password: pass
-            }
-            var Token = await agent.Account.GetToken(Cred)
-
-            this.token = Token.data.token
-            await AsyncStorage.setItem(PERSISTENCE_KEY, this.token)
-            var token = await AsyncStorage.getItem(PERSISTENCE_KEY, (error) => { })
-            this.loading = true
-            this.loading = false
-            if (!token) {
-
-
-
-            }
-
-            //   this.token = JSON.parse(token)
-            this.token = Token.data.token 
-            return this.token
- 
+            var token = await AsyncStorage.getItem(PERSISTENCE_KEY, (error) => {
+            })
+            this.token = token
         })
     }
 
 
-    Logout= async()=>{
-        runInAction(async()=>{
-            await AsyncStorage.setItem(PERSISTENCE_KEY,undefined)
+    Logout = async (props) => {
+        runInAction(async () => {
+            this.token = ""
+
+            await AsyncStorage.removeItem(PERSISTENCE_KEY)
+            props.navigation.navigate("Login")
         })
     }
- 
-    CheckAuth = async()=>{
-        runInAction(async()=>{
-        await agent.Account.CheckAuth().catch((e)=>{
-            Alert.alert("Mobx Exception")
-            return e}) 
+
+    CheckAuth = async () => {
+        runInAction(async () => {
+            await agent.Account.CheckAuth().catch((e) => {
+                Alert.alert("Mobx Exception")
+                return e
+            })
         })
     }
 
@@ -166,31 +149,31 @@ export default class UserStore {
     ChangeImage = async (image) => {
         let formData = new FormData();
         var name = image.uri.split('/').pop()
-        formData.append('file',{
-            uri:Platform.OS == "android" ? image.uri  : image.uri.replace('file://',""),
-            name:name,
-            type:'image/jpg'
+        formData.append('file', {
+            uri: Platform.OS == "android" ? image.uri : image.uri.replace('file://', ""),
+            name: name,
+            type: 'image/jpg'
         })
-    
+
         await agent.Account.SetProfuilePic(formData)
         runInAction(async () => {
             this.ProfilePic = image
-      
-            await AsyncStorage.setItem(PROFILEPIC_KEY, JSON.stringify(this.ProfilePic)).catch((err)=>{
+
+            await AsyncStorage.setItem(PROFILEPIC_KEY, JSON.stringify(this.ProfilePic)).catch((err) => {
 
                 Alert.alert(err)
             })
 
-            
+
         }, [])
-    } 
+    }
 
     GetImagPice = async () => {
         runInAction(async () => {
 
-            this.ProfilePic =JSON.parse(await AsyncStorage.getItem(PROFILEPIC_KEY))  
-            const X =3;
-          
+            this.ProfilePic = JSON.parse(await AsyncStorage.getItem(PROFILEPIC_KEY))
+            const X = 3;
+
         }, [])
 
         return this.ProfilePic
@@ -198,5 +181,5 @@ export default class UserStore {
 
 
 
- 
+
 }

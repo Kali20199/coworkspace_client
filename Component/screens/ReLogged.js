@@ -7,10 +7,10 @@ import {ActivityIndicator,Colors,Switch  } from 'react-native-paper';
 
  
 function ReLogged(props) {
-const {UserStore:{Logout}} = useStore() 
-    useEffect(async()=>{
-       await Logout()
-       props.navigation.navigate("Login")
+const {UserStore:{Logout}} = useStore()  
+    useEffect(()=>{
+        Logout(props)
+    
     },[])
 
     return (
@@ -23,5 +23,4 @@ const {UserStore:{Logout}} = useStore()
     )
 } 
 
-export default ReLogged 
- 
+export default ReLogged

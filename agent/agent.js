@@ -47,7 +47,8 @@ const Account = {
     Login:(Cred)=>axios.post('/Account/login',Cred),
     UploadProfilePic:(image)=>axios.post('/Account/UploadImage',image),
     CheckAuth:()=>axios.get('Account/CheckAuth'),
-    SetProfuilePic:(image)=>axios.post('Account/SetProfPic',image)
+    SetProfuilePic:(image)=>axios.post('Account/SetProfPic',image),
+    FBLogin:(profile)=>axios.post('Account/FBLogin',profile)
   
     
 

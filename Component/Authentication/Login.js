@@ -9,41 +9,44 @@ import Color from '../../constant/Color'
 import { ScrollView } from 'react-native-gesture-handler';
 import LOGO from '../../assets/LightSpace.png'
 import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
-import MaterialCommunityIcons from 'react-native-vector-icons/Feather'
 // import axios from 'react-native-axios'
 function Login(props) {
 
-  const User = useStore()
-  const x = 3
-  const baseUrl = 'http://192.168.1.30:5003/api/Account'
-  const httpUrl = 'http//localhost:5085/api/Account'
-
-  const [Messgae, setMessage] = useState()
+  const baseUrl = 'http://192.168.1.30:5003/api/Account/CheckAuth'
   const { UserStore } = useStore()
   const [showpassword,setShowPassword] = useState(true)
 
-
-
-  useEffect(() => {
-    // CreateChannel();
-
-
-    const FetchData = async () => {
+   const FetchData = async () => {
       await axios.get(baseUrl).then(res => {
-        setMessage(res.data)
-
+  
+        if(UserStore.token!=undefined && UserStore.token!=null && UserStore.token!="" )
+        {
+          props.navigation.navigate('Dashboard')
+        }
         // Alert.alert("Compelete")
       })
 
         .catch(ex => {
-          debugger
+       
         })
     }
-    //FetchData()
+
+  useEffect(() => {
+    // CreateChannel();
+ 
+
+ 
+    FetchData()
 
 
   }, [])
 
+
+   const HndleFaceBookUser=(profile)=>{
+     const USER = JSON.parse(profile)
+     const x =USER
+
+   }
 
 
   let Cred = {
@@ -89,6 +92,7 @@ function Login(props) {
             <FBLogin
               onPermissionsMissing={() => {
                 FBLoginManager.loginWithPermissions(["email", "user_friends"], function (error, data) {
+                  HndleFaceBookUser(data.profile)
                   if (!error) {
                     console.log("Login data: ", data);
                   } else {
@@ -97,7 +101,9 @@ function Login(props) {
                 })
                 Alert.alert("Logged")
               }}
-              onLogin={function (data) { return "" }}
+              onLogin={function (data) { 
+                
+                return "" }}
               loginBehavior={FBLoginManager.LoginBehaviors.Native} />
 
           </View>

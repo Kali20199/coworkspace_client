@@ -69,7 +69,7 @@ function BtoomNav() {
     tabBarOptions={{
       activeTintColor: '#ffff',
       inactiveTintColor: 'lightgray',
-      activeBackgroundColor: '#5c0759',
+      activeBackgroundColor: Color.acitvate,
       inactiveBackgroundColor: Color.primary,
           style: {
                 backgroundColor: '#CE4418',
