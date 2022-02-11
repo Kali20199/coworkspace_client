@@ -9,6 +9,7 @@ export const PERSISTENCE_KEY = 'UserToekn'
 export const PROFILEPIC_KEY = 'PROFILEPIC_KEY'
 export const UserInfo = "UserInfo"
 
+
 export default class UserStore {
     Creds = {
         userName: 'Mostafa',
@@ -20,6 +21,7 @@ export default class UserStore {
 
     }
     Logged = false
+
     User = null
     email = null
     loading = false
@@ -84,11 +86,25 @@ export default class UserStore {
         }, [])
     }
 
-    FaceBookLogin = async (profile) => {
-        runInAction = async () => {
-            await agent.Account.FBLogin(profile)
-        }
+    FaceBookLogin =  (profile,props) => {
+        runInAction(async () => {
+            await agent.Account.FBLogin(profile).then(async(res)=>{
+                this.token = res.data.token
+                await AsyncStorage.setItem(PERSISTENCE_KEY, this.token)
+                if(this.token!=null  && this.token!="" && this.token!=undefined){
+                props.navigation.navigate('Dashboard')}
+               
+            })
+        },[])
+    }
 
+    FaceBookLogout = async () => {
+        runInAction = async () => {
+                this.token = ""
+                await AsyncStorage.setItem(PERSISTENCE_KEY,this.token)
+               
+     
+        }
     }
 
     Register = async (Cred) => {
