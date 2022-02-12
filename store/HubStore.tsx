@@ -1,6 +1,6 @@
 import  { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { makeAutoObservable, runInAction } from "mobx";
-
+import { BASEURL } from "../agent/agent";
 export default class HubStore {
 
 
@@ -12,11 +12,11 @@ export default class HubStore {
 
 
      StartHubConnection=async()=>{
-        const hub = new HubConnectionBuilder()
+        const hub = new HubConnectionBuilder() 
         const x= 3;
         runInAction(async()=>{
       this.hubconnection =      new HubConnectionBuilder()
-            .withUrl("http://192.168.1.30:5003/chat?Reservations=SendMessage")
+            .withUrl(`${BASEURL}:5003/chat?Reservations=SendMessage`)
             
             .build()
             await this.hubconnection.start()

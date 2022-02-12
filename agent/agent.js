@@ -3,13 +3,15 @@ import {Alert} from 'react-native'
 import {PERSISTENCE_KEY} from '../store/User'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { store } from "../store/store";
+// 'http://192.168.1.30:5003/api'
+export const BASEURL = 'http://192.168.1.30' 
+axios.defaults.baseURL=`${BASEURL}:5003/api` 
 
-axios.defaults.baseURL='http://192.168.1.30:5003/api'
-axios.interceptors.response.use(async(res)=>{
-
+axios.interceptors.response.use(async(res)=>{ 
+ 
    
-
-   return res
+ 
+   return res 
 },(error)=>{ 
     // const {data,status} = error.response
     // const message = error.response.message 

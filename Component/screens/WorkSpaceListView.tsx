@@ -92,7 +92,7 @@ function WorkSpaceListView(props) {
     useEffect(() => { 
        
         setSortedArr(LightSpaceCard)
-        if (LightSpaceCard.length <= 1) { 
+        if (sortArr[0] ==  undefined) { 
             getAllSpacesCard()
         }
     }, [token,LightSpaceCard])
@@ -104,7 +104,7 @@ function WorkSpaceListView(props) {
 
 
         value == "" ? setSortedArr(LightSpaceCard) : setSortedArr([])
-        const arr = []
+        const arr = [] 
         LightSpaceCard.map((index) => {
             if (index.name.toUpperCase().includes(text.toUpperCase())) { 
                 arr.push(index) }
@@ -114,7 +114,7 @@ function WorkSpaceListView(props) {
     }
 
 
-
+ 
 { 
     return (
      
