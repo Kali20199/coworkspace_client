@@ -2,10 +2,10 @@ import React from 'react'
 import { Avatar, Button, Dialog, Portal, Provider, Paragraph, Card, Title } from 'react-native-paper';
 import { View, Text, StyleSheet, Alert } from 'react-native';
 import { Icon } from 'react-native-elements';
-
 import FontAwesome from 'react-native-vector-icons/FontAwesome5'
 import { observer } from 'mobx-react-lite';
-import { ScrollView } from 'react-native-gesture-handler';
+import { useStore } from '../../store/store';
+
 
 
 
@@ -16,7 +16,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 function ReservationWidget(props) {
     const { Time, Date, coworkID, coworkName, isConfirmed } = props.Reservations
-    
+    const {UserStore} = useStore()
    
     const [visable, setVisable] = React.useState(false)
     const CanceDialog = () => {
@@ -27,6 +27,7 @@ function ReservationWidget(props) {
                     <Dialog.Title>Are you Sure You want to Cancel Reservation"</Dialog.Title>
                     <Dialog.Content>
                         <Button onPress={() => {
+                            UserStore.DeleteReservation()
                             setVisable(false)
                         }} >Confirm</Button>
                         <Button onPress={() => { setVisable(false) }} >Cancel</Button>
@@ -69,7 +70,7 @@ function ReservationWidget(props) {
                     }} style={{ marginLeft: 20 }} name='delete' color={'#FF0000'} />
                 </View>
             </Card>
-            {visable && <Text>dsfdsfsdf</Text>}
+            {visable && <Text></Text>}
         </View>
 
 

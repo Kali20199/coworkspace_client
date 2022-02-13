@@ -1,9 +1,9 @@
 import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { makeAutoObservable, runInAction } from "mobx";
-import { Alert } from "react-native";
+import { Alert, View,Text } from "react-native";
 import { BASEURL } from "../agent/agent";
 import {store} from "./store";
-
+import Dialogs from '../Component/Widgets/Dialogs'
 
 
 
@@ -39,10 +39,16 @@ export default class HubStore {
             this.hubconnection.on("AcceptReservation", (res) => {
                const Confirmation = res.isConfimed
                  store.UserStore.setConfirmation(Confirmation)
-              
-              const Reservations =    store.UserStore
+          
+                
+     
+              store.InfoStore.setAcceptDialog(true)
 
-                Alert.alert("AcceptConfirmed :")
+              
+
+           
+               
+              
             })
 
 

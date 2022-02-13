@@ -5,15 +5,15 @@ import { observer } from 'mobx-react-lite';
 import SplashScreen from  "react-native-splash-screen";
 import LightSplashScreen  from './Component/screens/LightSplashScreen';
 import { useStore } from './store/store';
-
-
+import   Dialogs from './Component/Widgets/Dialogs'
+import {Provider} from 'react-native-paper'
 const App = () => {
 
  const {UserStore} = useStore()
 
 
  const FetchUser=async()=>{
-  await UserStore.GetUserEmail()
+  await UserStore.GetUserEmail() 
   await UserStore.GetPersitntToken()
  }
 
@@ -26,20 +26,22 @@ useEffect(async()=>{
 
   // Check User Auth Later on
 
-  // get user 
+  // get user  
 
-
-},[])
- 
+},[])  
+  
 
   return (
  
     <NavigationContainer >
-    <CoworkNav/>
   
+      
+    <CoworkNav/>
+   
     </NavigationContainer> 
   );
 };
 
 
 export default observer(App);
+  

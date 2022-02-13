@@ -13,7 +13,6 @@ const RERSERVATIONS = 'RERSERVATIONS'
 
 
 
-import { Reservations } from '../Component/Models/Models'
 export default class UserStore {
     Creds = {
         userName: 'Mostafa',
@@ -24,6 +23,7 @@ export default class UserStore {
 
 
     }
+  
     Logged = false
 
     User = null
@@ -236,5 +236,20 @@ export default class UserStore {
 
         }
     }
+
+    DeleteReservation = async () => {
+        try {
+            runInAction(async () => {
+                this.Reservations = null
+                 await AsyncStorage.removeItem(RERSERVATIONS)
+               
+            }, [])
+
+        } catch (e) {
+
+        }
+    }
+
+
 
 }

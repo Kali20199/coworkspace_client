@@ -19,7 +19,8 @@ import MyProfile from '../Settings/MyProfile';
 import ReservationsScreem from '../screens/ReservationsScreem';
 import ReLogged from '../screens/ReLogged';
 import { useEffect } from "react";
-
+import { Provider } from 'react-native-paper'
+import Dialogs from './../Widgets/Dialogs';
 
 enableScreens()
 
@@ -97,9 +98,10 @@ const CoworkNav = (props) => {
   },[])
 
   return (
-
-
+<Provider>
+<Dialogs/>
     <Stack.Navigator >
+    
       <Stack.Screen name="Login" component={Login} options={HeaderBase("Login")} />
       <Stack.Screen name="Dashboard" component={BtoomNav} options={{ headerShown: false }} />
       <Stack.Screen name="Register" component={Register}  options={{ ...HeaderBase("Register") }} />
@@ -112,10 +114,10 @@ const CoworkNav = (props) => {
       <Stack.Screen name="New6" component={Register} options={{ headerShown: false }} />
       <Stack.Screen name="New7" component={Register} options={{ headerShown: false }} />
     </Stack.Navigator>
+    </Provider>
 
   )
 }
-
 
 
 const style = StyleSheet.create({
