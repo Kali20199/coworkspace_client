@@ -4,11 +4,12 @@ import { Work } from '../../constant/Application';
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 import { observer } from 'mobx-react-lite';
-import {  useStore } from '../../store/store';
+import { useStore } from '../../store/store';
 import Searchbar from '../Widgets/serchBar'
 import Color from '../../constant/Color';
 import { List, ActivityIndicator, Colors, Switch } from 'react-native-paper';
-
+import { useCallback } from 'react';
+import HndleConnectionsOnStart from '../Widgets/HndleConnectionsOnStart'
 
 
 
@@ -17,27 +18,27 @@ import { List, ActivityIndicator, Colors, Switch } from 'react-native-paper';
 const LightSpaceListItem = (props) => {
     const { item } = props
     const { name, id, mainImage, timeColosed } = item.item
-    const { CoWorkStore:{getSpaceByid,setCoworkOptions} } = useStore()
-    const NavigateDetail=async()=>{
+    const { CoWorkStore: { getSpaceByid, setCoworkOptions } } = useStore()
+    const NavigateDetail = async () => {
         setCoworkOptions(name)
-         await   getSpaceByid(id,props)
-     
-              
-        
-      
+        await getSpaceByid(id, props)
+
+
+
+
     }
 
 
 
-   
+
     const x = 3;
     return (
 
         <View style={style.list}>
 
             <TouchableOpacity style={style.item_container} onPress={() => {
-                     NavigateDetail()
-    
+                NavigateDetail()
+
             }}>
                 <View style={{ width: '100%' }}>
                     <ImageBackground style={style.image} source={{ uri: mainImage }}>
@@ -49,7 +50,7 @@ const LightSpaceListItem = (props) => {
                                 <View style={style.lowerSec}>
                                     <Text style={style.open}>
                                         Open
-                                    </Text> 
+                                    </Text>
                                     <Text style={style.City}>
                                         Alexandria
                                     </Text>
@@ -73,29 +74,55 @@ const LightSpaceListItem = (props) => {
 
 
 
- 
+
 function WorkSpaceListView(props) {
     const windowHeight = Dimensions.get('window').height;
 
     const [value, setValue] = useState('')
     const [sortArr, setSortedArr] = useState([])
-    const { CoWorkStore: { getAllSpacesCard, LightSpaceCard },UserStore:{token}} = useStore()
+    const { UserStore,Hub, CoWorkStore: { getAllSpacesCard, LightSpaceCard }, UserStore: { token } } = useStore()
     const [refreshing, setRefreshing] = useState(false);
     const [Init, setInit] = useState(true);
 
-    const onRefresh = React.useCallback(async()  => {
+    const onRefresh = React.useCallback(async () => {
         setRefreshing(true);
-       await getAllSpacesCard()
+        await getAllSpacesCard()
         setRefreshing(false);
     }, []);
 
-    useEffect(() => { 
-       
+    useEffect(() => {
+         // User Ready of Listen on Acceprntce
+
+         if (UserStore.Reservations == null) {
+     
+        } else {
+            /// Add User on Group to with groupName coworkId to Listen On Accept or Reject Fro Server
+          
+    
+            const AcceptensModel = {
+                email: UserStore.email,
+                coworkId: UserStore.Reservations.coworkID
+    
+            }
+            
+            Hub.Invoke("joinGroupAcceptence", AcceptensModel) 
+        }
         setSortedArr(LightSpaceCard)
-        if (sortArr[0] ==  undefined) { 
+        if (sortArr[0] == undefined) {
+
+            UserStore.GetReservation()
+
             getAllSpacesCard()
         }
-    }, [token,LightSpaceCard])
+
+
+
+        // Hub._connectionState
+    }, [token, LightSpaceCard])
+
+
+
+
 
     const ChangeHandler = (event) => {
         const { text } = event.nativeEvent
@@ -104,59 +131,65 @@ function WorkSpaceListView(props) {
 
 
         value == "" ? setSortedArr(LightSpaceCard) : setSortedArr([])
-        const arr = [] 
+        const arr = []
         LightSpaceCard.map((index) => {
-            if (index.name.toUpperCase().includes(text.toUpperCase())) { 
-                arr.push(index) }
+            if (index.name.toUpperCase().includes(text.toUpperCase())) {
+                arr.push(index)
+            }
         })
         setSortedArr(arr)
         const x = 3;
     }
 
 
- 
-{ 
-    return (
-     
-        <View>
-             <Searchbar value={value} ChangeHandler={ChangeHandler} />
-            {(sortArr[0] !== undefined) ?
-                <ScrollView refreshControl={<RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                />} >
-                    <View style={style.serbarView}>
-                     
-                    </View>
+    
 
-                    <ActivityIndicator style={{position:'absolute', opacity: Init? 1: 0,top:(windowHeight/2)-60}}  animating={true} color={Colors.red800} />
 
-                    <FlatList style={{ marginBottom: 0 }} numColumns={1} data={sortArr} keyExtractor={item => item.id} renderItem={item => <LightSpaceListItem item={item} navigation={props.navigation} />} />
-                </ScrollView>
 
-                : <View style={{ flexDirection: 'row', justifyContent: 'center', height: '100%' }}>
-      
-                       <ActivityIndicator style={{position:'absolute', opacity: Init? 1: 0,top:(windowHeight/2)-60}}  animating={true} color={Colors.red800} />
-                       <View  style={{position:'absolute', opacity: !Init? 1: 0,top:(windowHeight/2)-60}}>
-                       {Init==false ? 
-                       <View>
-                       <Text style={{color:'red',fontSize:20,fontWeight:'900'}}>Sorry No InterNet Connection!</Text>
-                       <Text style={{color:'green',fontWeight:'900'}}>Swipe Screen to Refresh</Text>
-                       </View>
-                       : null}  
-                       </View>
+
+    {
+        return (
+
+            <View>
+                {/* <HndleConnectionsOnStart/> */}
+                <Searchbar value={value} ChangeHandler={ChangeHandler} />
+                {(sortArr[0] !== undefined) ?
                     <ScrollView refreshControl={<RefreshControl
                         refreshing={refreshing}
                         onRefresh={onRefresh}
-                    />}/>
-                 
-                     
-                  
-                </View>}
-        </View>
+                    />} >
+                        <View style={style.serbarView}>
 
-    )
-                    }
+                        </View>
+
+                        <ActivityIndicator style={{ position: 'absolute', opacity: Init ? 1 : 0, top: (windowHeight / 2) - 60 }} animating={true} color={Colors.red800} />
+
+                        <FlatList style={{ marginBottom: 0 }} numColumns={1} data={sortArr} keyExtractor={item => item.id} renderItem={item => <LightSpaceListItem item={item} navigation={props.navigation} />} />
+                    </ScrollView>
+
+                    : <View style={{ flexDirection: 'row', justifyContent: 'center', height: '100%' }}>
+
+                        <ActivityIndicator style={{ position: 'absolute', opacity: Init ? 1 : 0, top: (windowHeight / 2) - 60 }} animating={true} color={Colors.red800} />
+                        <View style={{ position: 'absolute', opacity: !Init ? 1 : 0, top: (windowHeight / 2) - 60 }}>
+                            {Init == false ?
+                                <View>
+                                    <Text style={{ color: 'red', fontSize: 20, fontWeight: '900' }}>Sorry No InterNet Connection!</Text>
+                                    <Text style={{ color: 'green', fontWeight: '900' }}>Swipe Screen to Refresh</Text>
+                                </View>
+                                : null}
+                        </View>
+                        <ScrollView refreshControl={<RefreshControl
+                            refreshing={refreshing}
+                            onRefresh={onRefresh}
+                        />} />
+
+
+
+                    </View>}
+            </View>
+
+        )
+    }
 }
 
 

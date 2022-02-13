@@ -5,9 +5,14 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert } from 'react-native';
 import 'react-native-gesture-handler';
 import { GeoLocation } from '../Component/Models/Models'
-import WorkSpaceCard from '../Component/Models/Models'
+import {WorkSpaceCard} from '../Component/Models/Models'
+
+
+
 
 export default class CoWorkStore {
+
+  
 
     name = 'WorkSpace'
     phone = null 
@@ -18,6 +23,7 @@ export default class CoWorkStore {
     location = undefined
     workSpaces=  undefined
     LightSpaceCard = Array(WorkSpaceCard)
+   
 
  
     constructor() {
@@ -32,7 +38,7 @@ export default class CoWorkStore {
     }
 
 
-
+   
 
     getSpaceAround = async () => {
 

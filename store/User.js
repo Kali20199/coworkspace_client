@@ -8,8 +8,12 @@ import 'react-native-gesture-handler';
 export const PERSISTENCE_KEY = 'UserToekn'
 export const PROFILEPIC_KEY = 'PROFILEPIC_KEY'
 export const UserInfo = "UserInfo"
+const RERSERVATIONS = 'RERSERVATIONS'
 
 
+
+
+import { Reservations } from '../Component/Models/Models'
 export default class UserStore {
     Creds = {
         userName: 'Mostafa',
@@ -27,6 +31,7 @@ export default class UserStore {
     loading = false
     token = null
     ProfilePic = null
+    Reservations = null
     UserLocation = {
         latitude: 0,
         longitude: 0,
@@ -86,24 +91,25 @@ export default class UserStore {
         }, [])
     }
 
-    FaceBookLogin =  (profile,props) => {
+    FaceBookLogin = (profile, props) => {
         runInAction(async () => {
-            await agent.Account.FBLogin(profile).then(async(res)=>{
+            await agent.Account.FBLogin(profile).then(async (res) => {
                 this.token = res.data.token
                 await AsyncStorage.setItem(PERSISTENCE_KEY, this.token)
-                if(this.token!=null  && this.token!="" && this.token!=undefined){
-                props.navigation.navigate('Dashboard')}
-               
+                if (this.token != null && this.token != "" && this.token != undefined) {
+                    props.navigation.navigate('Dashboard')
+                }
+
             })
-        },[])
+        }, [])
     }
 
     FaceBookLogout = async () => {
         runInAction = async () => {
-                this.token = ""
-                await AsyncStorage.setItem(PERSISTENCE_KEY,this.token)
-               
-     
+            this.token = ""
+            await AsyncStorage.setItem(PERSISTENCE_KEY, this.token)
+
+
         }
     }
 
@@ -196,6 +202,28 @@ export default class UserStore {
     }
 
 
+    AddReservation = async (reservation) => {
+        try {
+            runInAction(async () => {
+                this.Reservations = reservation
+      
+                await AsyncStorage.setItem(RERSERVATIONS,   JSON.stringify(this.Reservations))
+            }, [])
+        } catch (e) {
 
+        }
+    }
+
+    GetReservation = async () => {
+        try {
+            runInAction(async () => {
+                var Res = await AsyncStorage.getItem(RERSERVATIONS)
+                this.Reservations =JSON.parse(Res)
+            }, [])
+
+        } catch (e) {
+
+        }
+    }
 
 }

@@ -91,7 +91,7 @@ function WorkSpaceDetails(props) {
 
     CreateChannel() 
 
-    Hub.StartHubConnection()
+ 
    
  
 

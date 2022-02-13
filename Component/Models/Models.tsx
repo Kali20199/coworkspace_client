@@ -9,7 +9,11 @@ export class GeoLocation {
     
 
 }
-
+export interface Reservations{
+    coworkId:string
+    TimeReservation:string
+   
+}
 
 export interface WorkSpaceCard{
 

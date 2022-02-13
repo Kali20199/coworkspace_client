@@ -18,6 +18,7 @@ const App = () => {
  }
 
 useEffect(async()=>{
+
   FetchUser()
   SplashScreen.hide()
  

@@ -41,7 +41,7 @@ function SwipeModal(props) {
       
       };
 
-      const Reservation = (Date, Email, CoworkSpaceId) => {
+      const Reservation = (Date) => {
 
         let model = {
     
@@ -129,8 +129,15 @@ function SwipeModal(props) {
                                 if (DateRaserved !== null && TimeReserved !== null) {
                                     Alert.alert("Reserve Requested", `${DateRaserved} :  ${TimeReserved}`)
                                    props.HubCon.Invoke("Reservations", Reservation(DateRaserved +":"+ TimeReserved
-                                      , UserStore.email, CoWorkStore.id))
-                                    setVisible(false)
+                                      ))
+
+                                      var ReservationModel = {
+                                        Time:TimeReserved,
+                                        Date:DateRaserved,
+                                        coworkID:CoWorkStore.workSpaces.coworkSpaceId
+                                      }
+                                      UserStore.AddReservation(ReservationModel)
+                                    setVisible(false) 
                                   } else {
                                     Alert.alert("Please Select both Date and Time")
                                   }

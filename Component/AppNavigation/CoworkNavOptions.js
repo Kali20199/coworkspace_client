@@ -18,6 +18,7 @@ import AppSettings from '../Settings/AppSettings';
 import MyProfile from '../Settings/MyProfile';
 import ReservationsScreem from '../screens/ReservationsScreem';
 import ReLogged from '../screens/ReLogged';
+import { useEffect } from "react";
 
 
 enableScreens()
@@ -88,7 +89,12 @@ function BtoomNav() {
 
 
 const CoworkNav = (props) => {
-  const { CoWorkStore,UserStore } = useStore()
+  const { CoWorkStore,UserStore,Hub } = useStore()
+
+
+  useEffect(()=>{
+    Hub.StartHubConnection() 
+  },[])
 
   return (
 
