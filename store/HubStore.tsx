@@ -2,7 +2,7 @@ import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signal
 import { makeAutoObservable, runInAction } from "mobx";
 import { Alert } from "react-native";
 import { BASEURL } from "../agent/agent";
-import { useStore } from "./store";
+import {store} from "./store";
 
 
 
@@ -11,7 +11,7 @@ export default class HubStore {
 
 
     hubconnection: HubConnection
-    
+
     
     constructor() {
         makeAutoObservable(this);
@@ -38,8 +38,11 @@ export default class HubStore {
             })
             this.hubconnection.on("AcceptReservation", (res) => {
                const Confirmation = res.isConfimed
+                 store.UserStore.setConfirmation(Confirmation)
               
-                Alert.alert("AcceptConfirmed")
+              const Reservations =    store.UserStore
+
+                Alert.alert("AcceptConfirmed :")
             })
 
 

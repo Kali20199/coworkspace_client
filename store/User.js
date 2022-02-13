@@ -214,6 +214,17 @@ export default class UserStore {
         }
     }
 
+
+    setConfirmation = async(isConfirm)=>{
+   try{
+        runInAction(async()=>{
+            this.Reservations.isConfirmed =isConfirm ?  "True" : "False"
+            await AsyncStorage.setItem(RERSERVATIONS, JSON.stringify(this.Reservations))
+        },[])
+   }catch(e){}
+     
+    }
+
     GetReservation = async () => {
         try {
             runInAction(async () => {

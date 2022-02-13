@@ -9,9 +9,15 @@ function ReservationsScreem() {
 
     const [visable, setVisable] = React.useState(true)
     
-    const { UserStore } = useStore()
+    const { UserStore,CoWorkStore } = useStore()
+    var SpaceImg = ''
+    CoWorkStore.LightSpaceCard.map((Space)=>{
+         if(Space.id == UserStore.Reservations.coworkID.toUpperCase()){
+            SpaceImg = Space.mainImage
+         }
+    })
     const MyRenders = useCallback(
-        ({ item }) => <Reservation Reservations={UserStore.Reservations} itemData={item} />
+        ({ item }) => <Reservation Reservations={UserStore.Reservations} spaceImage={SpaceImg} itemData={item} />
 
         , [])
     return (
@@ -19,7 +25,7 @@ function ReservationsScreem() {
 
 
 
-            <Reservation Reservations={UserStore.Reservations} />
+            <Reservation Reservations={UserStore.Reservations}  spaceImage={SpaceImg} />
 
 
             {/* <Text>
