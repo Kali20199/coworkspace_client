@@ -2,12 +2,17 @@ import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signal
 import { makeAutoObservable, runInAction } from "mobx";
 import { Alert } from "react-native";
 import { BASEURL } from "../agent/agent";
+import { useStore } from "./store";
+
+
+
+
 export default class HubStore {
 
 
     hubconnection: HubConnection
-
-
+    
+    
     constructor() {
         makeAutoObservable(this);
     }
@@ -18,14 +23,22 @@ export default class HubStore {
         const x = 3;
         runInAction(async () => {
             this.hubconnection = new HubConnectionBuilder()
-                .withUrl(`${BASEURL}:5003/chat?Reservations=SendMessage`)
+                .withUrl(`${BASEURL}:5003/chat?Reservations=SendMessage`).withAutomaticReconnect()
 
                 .build()
-            await this.hubconnection.start()
-            this.hubconnection.on("Reservations", (data) => {
+            await this.hubconnection.start().then((res) => {
+                console.log("Nogiation Success")
+    
+            }).catch((err) => {
+                console.error(err)
+            });
+            this.hubconnection.on("Reservations", (res) => {
 
+                
             })
-            this.hubconnection.on("AcceptReservation", (data) => {
+            this.hubconnection.on("AcceptReservation", (res) => {
+               const Confirmation = res.isConfimed
+              
                 Alert.alert("AcceptConfirmed")
             })
 
@@ -48,7 +61,7 @@ export default class HubStore {
         runInAction(async () => {
           
             await this.hubconnection.invoke(method, value).then(res => {
-                Alert.alert("Success")
+            
             }).catch(e => {
             
             })

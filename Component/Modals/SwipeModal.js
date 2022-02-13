@@ -132,9 +132,12 @@ function SwipeModal(props) {
                                       ))
 
                                       var ReservationModel = {
+                                        
                                         Time:TimeReserved,
                                         Date:DateRaserved,
-                                        coworkID:CoWorkStore.workSpaces.coworkSpaceId
+                                        coworkID:CoWorkStore.workSpaces.coworkSpaceId,
+                                        coworkName:CoWorkStore.workSpaces.name,
+                                        isConfirmed:"False"
                                       }
                                       UserStore.AddReservation(ReservationModel)
                                     setVisible(false) 

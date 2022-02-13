@@ -15,8 +15,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 
 
 function ReservationWidget(props) {
-    const { id, name, imageurl, tabels } = props.itemData
-    const Reservations = props.Reservations
+    const { Time, Date, coworkID, coworkName, isConfirmed } = props.Reservations
     const [visable, setVisable] = React.useState(false)
     const CanceDialog = () => {
 
@@ -49,11 +48,16 @@ function ReservationWidget(props) {
                     <Avatar.Image source={{ uri: 'https://images.squarespace-cdn.com/content/v1/57333f3b044262e0b7ab43a3/1591797552694-7FMLLXF7Y6DZ17J2E3C6/4.jpg?format=1000w' }} />
                     <View style={style.veiwInfo}>
                         <Text style={style.name}>
-                            {name}
+                            {coworkName}
+                        </Text>
+
+
+                        <Text style={{ ...style.name, color: isConfirmed == "False" ? 'red' : 'greem' }}>
+                            {isConfirmed == "False" ? "Not Confimed" : "Confirmed"}
                         </Text>
                     </View>
                     <Text style={style.veiwInfo}>
-                        10:30Am - 2:30Pm
+                        {Date}:{Time}
                     </Text>
                     <FontAwesome style={{ marginLeft: 10 }} name='clock' size={20} color={'#000000'} />
 

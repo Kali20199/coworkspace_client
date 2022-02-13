@@ -206,8 +206,8 @@ export default class UserStore {
         try {
             runInAction(async () => {
                 this.Reservations = reservation
-      
-                await AsyncStorage.setItem(RERSERVATIONS,   JSON.stringify(this.Reservations))
+           
+                await AsyncStorage.setItem(RERSERVATIONS, JSON.stringify(this.Reservations))
             }, [])
         } catch (e) {
 
@@ -218,7 +218,7 @@ export default class UserStore {
         try {
             runInAction(async () => {
                 var Res = await AsyncStorage.getItem(RERSERVATIONS)
-                this.Reservations =JSON.parse(Res)
+                this.Reservations = JSON.parse(Res)
             }, [])
 
         } catch (e) {
