@@ -14,6 +14,8 @@ target 'coworkspace_client' do
 
   pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
 
+  pod 'RNScreens', :path => '../node_modules/react-native-screens'
+
   target 'coworkspace_clientTests' do
     inherit! :complete
     # Pods for testing

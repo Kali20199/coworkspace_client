@@ -31,7 +31,7 @@ const LightSpaceListItem = (props) => {
     }
 
 
- 
+
 
     const x = 3;
     return (
@@ -72,7 +72,7 @@ const LightSpaceListItem = (props) => {
     )
 }
 
- 
+
 
 
 
@@ -146,24 +146,24 @@ function WorkSpaceListView(props) {
 
 
 
-  
- 
+
+
 
     {
         return (
-        <Provider>
-      
+            <Provider>
+
                 <View>
                     {/* <HndleConnectionsOnStart/> */}
-                  
+
                     <Searchbar value={value} ChangeHandler={ChangeHandler} />
                     {(sortArr[0] !== undefined) ?
                         <ScrollView refreshControl={<RefreshControl
                             refreshing={refreshing}
                             onRefresh={onRefresh}
                         />} >
-                          
-                         
+
+
 
                             <FlatList style={{ marginBottom: 0 }} numColumns={1} data={sortArr} keyExtractor={item => item.id} renderItem={item => <LightSpaceListItem item={item} navigation={props.navigation} />} />
                         </ScrollView>
@@ -188,8 +188,8 @@ function WorkSpaceListView(props) {
 
                         </View>}
                 </View>
-                </Provider>
-            
+            </Provider>
+
         )
     }
 }

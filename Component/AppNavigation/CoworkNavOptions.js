@@ -35,7 +35,7 @@ export const HeaderBase = (Title, icon) => {
 
     headerTintColor: 'white',
     headerStyle: { backgroundColor: Color.primary },
- 
+
 
     headerCenter: () => <Text style={style.Text}>{Title}</Text>,
     tabBarIcon: () => <MaterialCommunityIcons name={icon} size={20} color='black' />,
@@ -44,7 +44,7 @@ export const HeaderBase = (Title, icon) => {
   }
   return Header
 }
-const x ="dfsdfsdf"
+const x = "dfsdfsdf"
 
 
 function NavDrawer(props) {
@@ -52,7 +52,7 @@ function NavDrawer(props) {
     <Drawer.Navigator initialRouteName="CoworkSpaces" >
       <Drawer.Screen name="MyProfile" component={MyProfile} options={{ ...HeaderBase("MyProfile", "user") }} />
       <Drawer.Screen name="App Setting" component={AppSettings} options={HeaderBase("App Setting", "settings")} />
-      <Drawer.Screen name="Logout" component={ReLogged} options={{ ...HeaderBase("Logout", "log-out"),headerShown:false}  } />
+      <Drawer.Screen name="Logout" component={ReLogged} options={{ ...HeaderBase("Logout", "log-out"), headerShown: false }} />
       <Drawer.Screen name="All_Rreservations" component={ReservationsScreem} options={HeaderBase("My Reservations", "biscuit-clock")} />
     </Drawer.Navigator>
   )
@@ -67,18 +67,18 @@ function BtoomNav() {
 
   // Ohter Screen When Login
   return (
-    <Tab.Navigator   
-    tabBarOptions={{
-      activeTintColor: '#ffff',
-      inactiveTintColor: 'lightgray',
-      activeBackgroundColor: Color.acitvate,
-      inactiveBackgroundColor: Color.primary,
-          style: {
-                backgroundColor: '#CE4418',
-                paddingBottom: 3
-          }
-   }}
-    
+    <Tab.Navigator
+      tabBarOptions={{
+        activeTintColor: '#ffff',
+        inactiveTintColor: 'lightgray',
+        activeBackgroundColor: Color.acitvate,
+        inactiveBackgroundColor: Color.primary,
+        style: {
+          backgroundColor: '#CE4418',
+          paddingBottom: 3
+        }
+      }}
+
     >
       <Tab.Screen name={App_Name} component={WorkSpaceListView} options={{ headerShown: true, ...HeaderBase(App_Name, "home") }} />
       <Tab.Screen name="Map" component={GoogleMap} options={{ headerShown: false, ...HeaderBase("Map", "map") }} />
@@ -90,30 +90,30 @@ function BtoomNav() {
 
 
 const CoworkNav = (props) => {
-  const { CoWorkStore,UserStore,Hub } = useStore()
+  const { CoWorkStore, UserStore, Hub } = useStore()
 
 
-  useEffect(()=>{
-    Hub.StartHubConnection() 
-  },[])
+  useEffect(() => {
+    Hub.StartHubConnection()
+  }, [])
 
   return (
-<Provider>
-<Dialogs/>
-    <Stack.Navigator >
-    
-      <Stack.Screen name="Login" component={Login} options={HeaderBase("Login")} />
-      <Stack.Screen name="Dashboard" component={BtoomNav} options={{ headerShown: false }} />
-      <Stack.Screen name="Register" component={Register}  options={{ ...HeaderBase("Register") }} />
-      <Stack.Screen name={'Ink'} component={WorkSpaceDetails} options={{ ...HeaderBase(CoWorkStore.name) }} />
-      <Stack.Screen name="New1" component={Register} options={{ headerShown: false }} />
-      <Stack.Screen name="New2" component={Register} options={{ headerShown: false }} />
-      <Stack.Screen name="New3" component={Register} options={{ headerShown: false }} />
-      <Stack.Screen name="New4" component={Register} options={{ headerShown: false }} />
-      <Stack.Screen name="New5" component={Register} options={{ headerShown: false }} />
-      <Stack.Screen name="New6" component={Register} options={{ headerShown: false }} />
-      <Stack.Screen name="New7" component={Register} options={{ headerShown: false }} />
-    </Stack.Navigator>
+    <Provider>
+      <Dialogs />
+      <Stack.Navigator >
+
+        <Stack.Screen name="Login" component={Login} options={HeaderBase("Login")} />
+        <Stack.Screen name="Dashboard" component={BtoomNav} options={{ headerShown: false }} />
+        <Stack.Screen name="Register" component={Register} options={{ ...HeaderBase("Register") }} />
+        <Stack.Screen name={'Ink'} component={WorkSpaceDetails} options={{ ...HeaderBase(CoWorkStore.name) }} />
+        <Stack.Screen name="New1" component={Register} options={{ headerShown: false }} />
+        <Stack.Screen name="New2" component={Register} options={{ headerShown: false }} />
+        <Stack.Screen name="New3" component={Register} options={{ headerShown: false }} />
+        <Stack.Screen name="New4" component={Register} options={{ headerShown: false }} />
+        <Stack.Screen name="New5" component={Register} options={{ headerShown: false }} />
+        <Stack.Screen name="New6" component={Register} options={{ headerShown: false }} />
+        <Stack.Screen name="New7" component={Register} options={{ headerShown: false }} />
+      </Stack.Navigator>
     </Provider>
 
   )

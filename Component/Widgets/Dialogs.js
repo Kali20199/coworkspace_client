@@ -14,6 +14,7 @@ const {InfoStore,UserStore} = useStore()
     return (    
      
         <Portal>
+            {UserStore?.Reservations?
         <Dialog visible={InfoStore.AcceptDialog} onDismiss={() => InfoStore.setAcceptDialog(false)}>
             <View style={style.header}>
             <Image source={Accept} style={style.img}/>
@@ -39,7 +40,7 @@ const {InfoStore,UserStore} = useStore()
                     InfoStore.setAcceptDialog(false) }} >Ok</Button>
             </Dialog.Content>
 
-        </Dialog>
+        </Dialog> : null}
     </Portal>
 
 

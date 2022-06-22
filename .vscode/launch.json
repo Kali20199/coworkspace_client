@@ -9,7 +9,8 @@
       "name": "Attach to packager",
       "request": "attach",
       "type": "reactnative",
-      "cwd": "${workspaceFolder}"
+      "cwd": "${workspaceFolder}",
+      "port": 8081
     },
     {
       "name": "Attach to Hermes application - Experimental",
