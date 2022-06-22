@@ -14,7 +14,7 @@ import HndleConnectionsOnStart from '../Widgets/HndleConnectionsOnStart'
 
 import { Provider } from 'react-native-paper'
 
-
+const width = Dimensions.get("window").width;
 
 
 const LightSpaceListItem = (props) => {
@@ -43,7 +43,7 @@ const LightSpaceListItem = (props) => {
 
             }}>
                 <View style={{ width: '100%' }}>
-                    <ImageBackground style={style.image} source={{ uri: mainImage }}>
+                    <ImageBackground resizeMode='cover' style={style.image} source={{ uri: mainImage }}>
                         <View style={style.ImgaeBack}>
                             <View style={style.Info}>
                                 <Text style={style.Name}>
@@ -156,7 +156,9 @@ function WorkSpaceListView(props) {
                 <View>
                     {/* <HndleConnectionsOnStart/> */}
 
-                    <Searchbar value={value} ChangeHandler={ChangeHandler} />
+                    <View style={style.searchbar}>
+                        <Searchbar  value={value} ChangeHandler={ChangeHandler} />
+                    </View>
                     {(sortArr[0] !== undefined) ?
                         <ScrollView refreshControl={<RefreshControl
                             refreshing={refreshing}
@@ -165,7 +167,7 @@ function WorkSpaceListView(props) {
 
 
 
-                            <FlatList style={{ marginBottom: 0 }} numColumns={1} data={sortArr} keyExtractor={item => item.id} renderItem={item => <LightSpaceListItem item={item} navigation={props.navigation} />} />
+                            <FlatList style={{ marginBottom: 140 }} numColumns={1} data={sortArr} keyExtractor={item => item.id} renderItem={item => <LightSpaceListItem item={item} navigation={props.navigation} />} />
                         </ScrollView>
 
                         : <View style={{ flexDirection: 'row', justifyContent: 'center', height: '100%' }}>
@@ -186,7 +188,8 @@ function WorkSpaceListView(props) {
 
 
 
-                        </View>}
+                        </View>
+                        }
                 </View>
             </Provider>
 
@@ -201,8 +204,17 @@ const style = StyleSheet.create({
     serbarView: {
         flexDirection: 'row',
         justifyContent: 'center',
+        position:'absolute',
+        width: '100%',
+        backgroundColor:Color.primary
 
-        width: '100%'
+    },
+
+    searchbar:{
+        position:'absolute',
+        flexDirection:'row',
+        justifyContent:'center',
+        width:width,
 
     },
 
