@@ -80,13 +80,13 @@ export default class CoWorkStore {
     
     } 
   
-    getSpaceByid=async(id,props)=>{
+    getSpaceByid=async(id,props,mainImage)=>{
         runInAction(async()=>{
         
             var Spaces = await agent.WorkSpace.getSpaceByid(id).then(res => {
                 this.workSpaces = res.data
         
-                props.navigation.navigate('Ink') 
+                props.navigation.navigate('Ink',mainImage) 
              
         }) 
  

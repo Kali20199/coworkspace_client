@@ -22,11 +22,13 @@ import ReLogged from '../screens/ReLogged';
 import { useEffect } from "react";
 import { Provider } from 'react-native-paper'
 import Dialogs from './../Widgets/Dialogs';
+import {createSharedElementStackNavigator} from 'react-navigation-shared-element'
+
 
 enableScreens()
 
 const Drawer = createDrawerNavigator()
-const Stack = createNativeStackNavigator()
+const Stack = createSharedElementStackNavigator()
 const Tab = createBottomTabNavigator();
 
  // animation
@@ -37,7 +39,7 @@ const scaling = scalingInit.interpolate({
 })
 
 
- 
+
 
 
 const TabbarButton = ({ icon, focused }) => {

@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Image, Button, Alert, Animated, Easing, Dimensions ,RefreshControl} from 'react-native'
+import { View, Text, StyleSheet, Image, Button, Alert, Animated, Easing, Dimensions, RefreshControl } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useStore } from '../../store/store'
 import Color from '../../constant/Color'
@@ -18,7 +18,8 @@ import SwipeModal from '../Modals/SwipeModal'
 import Entypo from 'react-native-vector-icons/Entypo'
 import * as signalR from '@microsoft/signalr';
 import MyButton from './../MyCustomCompnents/MyButton';
-
+import { SharedElement } from 'react-navigation-shared-element'
+import { useNavigation } from '@react-navigation/native'
 
 
 
@@ -32,7 +33,7 @@ import MyButton from './../MyCustomCompnents/MyButton';
 const windowWidth = Dimensions.get('window').width;
 function WorkSpaceDetails(props) {
   const [visible, setVisible] = React.useState(false);
-  const [showInfo,setInfo] = useState(true)
+  const [showInfo, setInfo] = useState(true)
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -44,8 +45,8 @@ function WorkSpaceDetails(props) {
     outputRange: [0, 4]
   })
 
-  const {  UserStore,Hub} = useStore()
-  const { CoWorkStore} = useStore()
+  const { UserStore, Hub } = useStore()
+  const { CoWorkStore } = useStore()
 
   const [swipeModal, setSwipeModal] = useState(false);
 
@@ -58,7 +59,7 @@ function WorkSpaceDetails(props) {
     return (
       <View style={{ marginLeft: 20 }}>
 
-        <Image  style={{ height: 150, width: 200 }} source={{ uri: props.img }} />
+        <Image style={{ height: 150, width: 200 }} source={{ uri: props.img }} />
       </View>
     )
   }
@@ -90,13 +91,13 @@ function WorkSpaceDetails(props) {
       easing: Easing.linear,
     }).start()
 
-    CreateChannel() 
+    CreateChannel()
 
- 
-   
- 
 
-  },[])
+
+
+
+  }, [])
 
 
 
@@ -131,10 +132,10 @@ function WorkSpaceDetails(props) {
 
         <Text style={[style.moreinfo]}>
           <FontAwesome5 name={"person-booth"} size={20} color='green' />
-          .     Private Rooms :  {CoWorkStore.workSpaces.privateRooms} 
+          .     Private Rooms :  {CoWorkStore.workSpaces.privateRooms}
         </Text>
 
-        <Text style={[style.moreinfo]}> 
+        <Text style={[style.moreinfo]}>
           <FontAwesome5 name={"coins"} size={20} color='yellow' />
           .     TablePrice : 20 EGP
         </Text>
@@ -160,75 +161,77 @@ function WorkSpaceDetails(props) {
 
 
   const pan = React.useRef(new Animated.ValueXY()).current;
-  const {workSpaces} = CoWorkStore 
+  const { workSpaces } = CoWorkStore
 
-  const getMainImage=(workSpaces)=>{
-    const MainImg = workSpaces.images.find(x=>x.isMain == true).url; 
+  const getMainImage = (workSpaces) => {
+    const MainImg = workSpaces.images.find(x => x.isMain == true).url;
     return MainImg
-}
+  }
 
-  const MainImg = getMainImage(workSpaces) 
-    
+  const MainImg = getMainImage(workSpaces)
+
 
 
   return (
     <ScrollView >
 
       <Provider>
-     
-        <View>
-          <View> 
 
-            <Animated.Image style={{ opacity: scalingInit, ...style.image }} source={{ uri: MainImg }} />
+        <View>
+          <View>
+            <SharedElement id={MainImg}>
+              <Image resizeMode='cover' style={style.image} source={{ uri: MainImg }} />
+            </SharedElement>
           </View>
           {showInfo &&
-          <View style={{ flexDirection: 'row', justifyContent: 'center', ...style.Container }}>
-            <View>
-              <Text style={[style.text, style.name, style.cards]}>
-                {workSpaces.name}
-              </Text>
+            <View style={{ flexDirection: 'row', justifyContent: 'center', ...style.Container }}>
+              <View>
+                <Text style={[style.text, style.name, style.cards]}>
+                  {workSpaces.name}
+                </Text>
 
 
-              <Animated.Text style={[style.text, style.cards]}>
-                Free Tables : {workSpaces.tables}
-              </Animated.Text>
+                <Animated.Text style={[style.text, style.cards]}>
+                  Free Tables : {workSpaces.tables}
+                </Animated.Text>
 
 
-              <Animated.Text style={[style.text, style.cards]}>
-                city : {workSpaces.city}
-              </Animated.Text>
+                <Animated.Text style={[style.text, style.cards]}>
+                  city : {workSpaces.city}
+                </Animated.Text>
 
-              <Text style={[style.info]}>
-                Space Info
-              </Text>
-    
-              <RenderInfo />
-   
-              
+                <Text style={[style.info]}>
+                  Space Info
+                </Text>
+
+                <RenderInfo />
 
 
-              <Card> 
-                <Card.Title>Space View</Card.Title>
-                <FlatList horizontal data={workSpaces.images} renderItem={item =>
-                  
-                  <WorkSpaceImage img={item.item.url} />} />
 
-              </Card>
-           
-            </View>
-          </View>}
+
+                <Card>
+                  <Card.Title>Space View</Card.Title>
+                  <FlatList horizontal data={workSpaces.images} renderItem={item =>
+
+                    <WorkSpaceImage img={item.item.url} />} />
+
+                </Card>
+
+              </View>
+            </View>}
           {/* {ReservarionModal()} */}
-        
-          <SwipeModal swipeModal={swipeModal}  setSwipeModal={setSwipeModal}  HubCon={Hub} />
-          
+
+          <SwipeModal swipeModal={swipeModal} setSwipeModal={setSwipeModal} HubCon={Hub} />
+
           <View style={style.button}>
 
- 
-         <View style={{width:250}}>
-           <MyButton icon={<Entypo name={'book'} size={22} color='white'/>} title={'Reserve Now'}  color={Color.primary} fun={()=>{
-            setSwipeModal(!swipeModal)
-            showModal()}}/>
-         </View>
+
+            <View style={{ width: 250 }}>
+              <MyButton icon={<Entypo name={'book'} size={22} color='white' />} title={'Reserve Now'} color={Color.primary} fun={() => {
+                setSwipeModal(!swipeModal)
+                showModal()
+              }} />
+            </View>
             {/* // PushNotification.localNotification({
               //   channelId: "test-channel",
               //   title: "Light Space",
@@ -236,7 +239,7 @@ function WorkSpaceDetails(props) {
 
 
               // }) */}
-   
+
           </View>
         </View>
 
@@ -315,6 +318,13 @@ const style = StyleSheet.create({
 
 
 })
+WorkSpaceDetails.sharedElements = ({ route }) => {
+  var imgid = route.params
+  //const item = useNavigation.getParam("id");
+
+  return [imgid]
+}
+
 
 
 export default WorkSpaceDetails

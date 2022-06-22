@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, FlatList, ImageBackground, TouchableOpacity, Button, RefreshControl, Dimensions, Alert, BackHandler } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity, Button, RefreshControl, Dimensions, Alert, BackHandler } from 'react-native';
 import { Work } from '../../constant/Application';
 import { StyleSheet } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
@@ -11,9 +11,8 @@ import { List, ActivityIndicator, Colors, Switch } from 'react-native-paper';
 import { useCallback } from 'react';
 import HndleConnectionsOnStart from '../Widgets/HndleConnectionsOnStart'
 
-
 import { Provider } from 'react-native-paper'
-
+import {SharedElement} from 'react-navigation-shared-element'
 const width = Dimensions.get("window").width;
 
 
@@ -23,7 +22,7 @@ const LightSpaceListItem = (props) => {
     const { CoWorkStore: { getSpaceByid, setCoworkOptions } } = useStore()
     const NavigateDetail = async () => {
         setCoworkOptions(name)
-        await getSpaceByid(id, props)
+        await getSpaceByid(id, props,mainImage)
 
 
 
@@ -31,7 +30,7 @@ const LightSpaceListItem = (props) => {
     }
 
 
-
+    
 
     const x = 3;
     return (
@@ -43,7 +42,9 @@ const LightSpaceListItem = (props) => {
 
             }}>
                 <View style={{ width: '100%' }}>
-                    <ImageBackground resizeMode='cover' style={style.image} source={{ uri: mainImage }}>
+             <SharedElement id={mainImage}>
+                    <Image resizeMode='cover' style={style.image} source={{ uri: mainImage }}/>
+                    </SharedElement>
                         <View style={style.ImgaeBack}>
                             <View style={style.Info}>
                                 <Text style={style.Name}>
@@ -53,7 +54,7 @@ const LightSpaceListItem = (props) => {
                                     <Text style={style.open}>
                                         Open
                                     </Text>
-                                    <Text style={style.City}>
+                                <Text style={style.City}>
                                         Alexandria
                                     </Text>
                                     <Button onPress={() => {
@@ -63,12 +64,15 @@ const LightSpaceListItem = (props) => {
                                 </View>
                             </View>
                         </View>
-                    </ImageBackground>
+                    
+                  
+                 
+               
                 </View>
 
             </TouchableOpacity>
         </View>
-
+     
     )
 }
 
@@ -197,6 +201,8 @@ function WorkSpaceListView(props) {
     }
 }
 
+  
+  
 
 
 const style = StyleSheet.create({
