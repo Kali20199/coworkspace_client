@@ -8,7 +8,9 @@ import LottieView from 'lottie-react-native'
 import Color from '../../constant/Color'
 import { ScrollView } from 'react-native-gesture-handler';
 import LOGO from '../../assets/LightSpace.png'
+import MyButton from '../MyCustomCompnents/MyButton';
 import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
+import { SafeAreaView } from 'react-native-safe-area-context';
 // import axios from 'react-native-axios'
 function Login(props) {
 
@@ -69,15 +71,20 @@ function Login(props) {
 
   const Submit = () => {
 
-    UserStore.Login(Cred, props)
+    UserStore.Login(Cred, props) 
 
   }
   return (
+    <SafeAreaView style={style.SafeAreaView} edges={['top', 'left', 'right']}>
     <ScrollView>
-      <View style={style.Page}>
+      <View  style={{...style.Page }}>
         <View style={style.logoview}>
-          <LottieView style={style.app} source={require('../../Lottie/3520-light-bulb.json')} autoPlay loop />
-          <Image style={style.ImageLogo} source={LOGO} />
+          <View>
+            <LottieView style={style.app} source={require('../../Lottie/3520-light-bulb.json')} autoPlay loop />
+            <View style={{flexDirection:'row',justifyContent:'center'}}>
+              <Image style={style.ImageLogo} source={LOGO} />
+            </View>
+          </View>
         </View>
         <View style={style.container}>
 
@@ -88,13 +95,15 @@ function Login(props) {
             <TextInput right={<TextInput.Icon name="eye" onPress={() => setShowPassword(!showpassword)} />} onChange={handleInput} secureTextEntry={showpassword} nativeID='password' placeholder={'Password'} style={style.Input} />
           </View>
           <View style={style.BT}>
-            <Button color={Color.primary} onPress={() => { Submit() }} title={'Login'} />
+            <MyButton title={"Login"} color={Color.primary} fun={Submit} />
+            {/* <Button color={Color.primary} onPress={() => { Submit() }} title={'Login'} /> */}
           </View>
           <View style={style.BT}>
-            <Button color={Color.accent} onPress={() => { props.navigation.navigate('Register') }} title={'Register'} />
+          <MyButton title={"Register"} color={Color.accent} fun={()=>props.navigation.navigate('Register')} />
+        
           </View>
           <View style={style.BT}>
-            <FBLogin style={{ marginBottom: 10, }}
+            {/* <FBLogin style={{ marginBottom: 10, }}
               ref={(fbLogin) => { this.fbLogin = fbLogin }}
               permissions={["email", "user_friends"]}
               loginBehavior={FBLoginManager.LoginBehaviors.Native}
@@ -128,12 +137,14 @@ function Login(props) {
                 console.log("Check permissions!");
                 console.log(data);
               }}
-            />
+            /> */}
 
           </View>
         </View>
       </View>
     </ScrollView>
+    </SafeAreaView>
+   
 
   )
 }
@@ -145,9 +156,16 @@ export const style = StyleSheet.create({
 
 
   },
+  sfaarea:{
+    flex: 1,
+     justifyContent: 'space-between',
+     alignItems: 'center' 
+  },
+
+
   app: {
 
-    height: 150,
+    height: 200,
     flexDirection: 'row',
     width: '100%',
     justifyContent: 'center',
@@ -155,7 +173,7 @@ export const style = StyleSheet.create({
 
   },
   container: {
-    marginTop: 50,
+    marginTop: 200,
     justifyContent: 'center',
     width: '70%',
     marginLeft: 'auto',
@@ -169,11 +187,10 @@ export const style = StyleSheet.create({
 
     marginTop: 20,
     height: 50,
-    borderWidth: 1,
+   
     textAlign: 'center',
 
-    alignContent: 'flex-start',
-    justifyContent: 'flex-start'
+   
 
 
 
@@ -181,11 +198,14 @@ export const style = StyleSheet.create({
   },
   BT: {
 
-    marginTop: 20
+    marginTop: 20,
+    borderRadius:50
   },
 
   logoview: {
-    marginLeft: 110,
+    flexDirection:'row',
+    height:100,
+   justifyContent:'center'
   },
 
   ImageLogo: {
@@ -200,8 +220,8 @@ export const style = StyleSheet.create({
   passwordContainer: {
 
 
-    borderBottomWidth: 1,
-    borderColor: '#000',
+
+   
     paddingBottom: 10,
   },
   icon: {

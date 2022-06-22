@@ -1,10 +1,11 @@
 import Color from "../../constant/Color"
 import React from "react";
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet, Text, View, Animated ,TouchableOpacity,SafeAreaView} from 'react-native';
 import { observer } from 'mobx-react-lite';
 import { enableScreens } from 'react-native-screens';
 import Register from '../../Component/Authentication/Register'
-import MaterialCommunityIcons from 'react-native-vector-icons/Feather'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialIcons'
+import DrawerIcons from 'react-native-vector-icons/Feather'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -28,6 +29,29 @@ const Drawer = createDrawerNavigator()
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator();
 
+ // animation
+const scalingInit = new Animated.Value(0)
+const scaling = scalingInit.interpolate({
+  inputRange: [0, 1],
+  outputRange: [0, 4]
+})
+
+
+ 
+
+
+const TabbarButton = ({ icon, focused }) => {
+
+  return (
+    <Animated.View>
+
+      <MaterialCommunityIcons name={icon} size={focused? 29 : 23} 
+        color={focused ? Color.primary : 'black'} />
+      
+    </Animated.View>
+)
+}
+
 
 export const HeaderBase = (Title, icon) => {
 
@@ -38,9 +62,9 @@ export const HeaderBase = (Title, icon) => {
 
 
     headerCenter: () => <Text style={style.Text}>{Title}</Text>,
-    tabBarIcon: () => <MaterialCommunityIcons name={icon} size={20} color='black' />,
+    tabBarIcon: ({ color, focused }) => <TabbarButton focused={focused} icon={icon} />,
     headerTitle: () => <Text style={style.Text}>{Title}</Text>,
-    drawerIcon: () => <MaterialCommunityIcons name={icon} size={20} color='black' />
+    drawerIcon: () => <DrawerIcons name={icon} size={23} color='black' />
   }
   return Header
 }
@@ -60,7 +84,7 @@ function NavDrawer(props) {
 
 
 
-
+//tabBarBadge: 3
 
 
 function BtoomNav() {
@@ -68,21 +92,23 @@ function BtoomNav() {
   // Ohter Screen When Login
   return (
     <Tab.Navigator
-      tabBarOptions={{
-        activeTintColor: '#ffff',
-        inactiveTintColor: 'lightgray',
-        activeBackgroundColor: Color.acitvate,
-        inactiveBackgroundColor: Color.primary,
-        style: {
-          backgroundColor: '#CE4418',
-          paddingBottom: 3
+      screenOptions={{
+
+        tabBarStyle: {
+          height: 55,
+          position: 'absolute',
+          left: 16,
+          right: 16,
+          bottom: 16,
+          borderRadius: 20
         }
       }}
 
     >
-      <Tab.Screen name={App_Name} component={WorkSpaceListView} options={{ headerShown: true, ...HeaderBase(App_Name, "home") }} />
+
+      <Tab.Screen name={App_Name} component={WorkSpaceListView} options={{ headerShown: true, ...HeaderBase(App_Name, "dashboard") }} />
       <Tab.Screen name="Map" component={GoogleMap} options={{ headerShown: false, ...HeaderBase("Map", "map") }} />
-      <Tab.Screen name="Settings" component={NavDrawer} options={{ headerShown: false, tabBarBadge: 3, valueOf, ...HeaderBase("Settings", "settings") }} />
+      <Tab.Screen name="Settings" component={NavDrawer} options={{ headerShown: false, valueOf, ...HeaderBase("Settings", "settings") }} />
     </Tab.Navigator>
   );
 }
@@ -98,11 +124,13 @@ const CoworkNav = (props) => {
   }, [])
 
   return (
+    
     <Provider>
       <Dialogs />
+     
       <Stack.Navigator >
 
-        <Stack.Screen name="Login" component={Login} options={HeaderBase("Login")} />
+        <Stack.Screen name="Login" component={Login} options={{headerShown:false,...HeaderBase("Login")}} />
         <Stack.Screen name="Dashboard" component={BtoomNav} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={Register} options={{ ...HeaderBase("Register") }} />
         <Stack.Screen name={'Ink'} component={WorkSpaceDetails} options={{ ...HeaderBase(CoWorkStore.name) }} />
@@ -114,7 +142,9 @@ const CoworkNav = (props) => {
         <Stack.Screen name="New6" component={Register} options={{ headerShown: false }} />
         <Stack.Screen name="New7" component={Register} options={{ headerShown: false }} />
       </Stack.Navigator>
+    
     </Provider>
+ 
 
   )
 }

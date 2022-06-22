@@ -1,7 +1,7 @@
 export default {
     Secondry: '#C2185B',
-    acitvate:'#2a990b',
-    primary: '#185905',
+    acitvate:'#8e349e',
+    primary: '#751e85',
     accent: '#FFC107',
     tomato:'tomato',
     Facebook: '#3b5998',

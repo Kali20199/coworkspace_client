@@ -20,7 +20,7 @@ function WorkSpaceDetails(props) {
     const {CoWorkStore,UserStore} = useStore() 
     const  Detail  = CoWorkStore as  SpaceDetail
     return (
-        <View style={style.view}>
+        <View  style={style.view}>
             <View>
           
             <Image style={style.image} source={{uri:Detail.imageurl}}/>

@@ -15,8 +15,9 @@ import SwipeUpDownModal from 'react-native-swipe-modal-up-down';
 import TIMEADD from '../../assets/time.png'
 import DATE from '../../assets/date.png'
 import SwipeModal from '../Modals/SwipeModal'
-
+import Entypo from 'react-native-vector-icons/Entypo'
 import * as signalR from '@microsoft/signalr';
+import MyButton from './../MyCustomCompnents/MyButton';
 
 
 
@@ -223,23 +224,19 @@ function WorkSpaceDetails(props) {
           <View style={style.button}>
 
  
-         
-            <Button onPress={() => {
-          
-          setSwipeModal(!swipeModal)
-          showModal()
-    
-
-
-              // PushNotification.localNotification({
+         <View style={{width:250}}>
+           <MyButton icon={<Entypo name={'book'} size={22} color='white'/>} title={'Reserve Now'}  color={Color.primary} fun={()=>{
+            setSwipeModal(!swipeModal)
+            showModal()}}/>
+         </View>
+            {/* // PushNotification.localNotification({
               //   channelId: "test-channel",
               //   title: "Light Space",
               //   message: 'Reserved Succssefully',
 
 
-              // })
-
-            }} color={Color.primary} title={'Reserve Now'} />
+              // }) */}
+   
           </View>
         </View>
 

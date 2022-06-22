@@ -1,5 +1,6 @@
 import {NavigationContainer} from '@react-navigation/native'
 import React, { useEffect } from 'react';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import CoworkNav from './Component/AppNavigation/CoworkNavOptions';
 import { observer } from 'mobx-react-lite';
 import SplashScreen from  "react-native-splash-screen";
@@ -32,13 +33,16 @@ useEffect(async()=>{
   
 
   return (
- 
+    <SafeAreaProvider>
+     
     <NavigationContainer >
   
       
     <CoworkNav/>
-   
+    
     </NavigationContainer> 
+    </SafeAreaProvider>
+   
   );
 };
 
