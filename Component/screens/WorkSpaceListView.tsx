@@ -163,7 +163,9 @@ function WorkSpaceListView(props) {
                     <View style={style.searchbar}>
                         <Searchbar  value={value} ChangeHandler={ChangeHandler} />
                     </View>
-                    {(sortArr[0] !== undefined) ?
+                   {sortArr ? 
+                    <View>
+                   {(sortArr[0] !== undefined) ?
                         <ScrollView refreshControl={<RefreshControl
                             refreshing={refreshing}
                             onRefresh={onRefresh}
@@ -193,7 +195,7 @@ function WorkSpaceListView(props) {
 
 
                         </View>
-                        }
+                        }</View> : null }
                 </View>
             </Provider>
 

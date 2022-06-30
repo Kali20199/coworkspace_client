@@ -22,7 +22,7 @@ import ReLogged from '../screens/ReLogged';
 import { useEffect } from "react";
 import { Provider } from 'react-native-paper'
 import Dialogs from './../Widgets/Dialogs';
-import {createSharedElementStackNavigator} from 'react-navigation-shared-element'
+import {createSharedElementStackNavigator } from 'react-navigation-shared-element'
 
 
 enableScreens()
@@ -32,7 +32,7 @@ const Stack = createSharedElementStackNavigator()
 const Tab = createBottomTabNavigator();
 
  // animation
-const scalingInit = new Animated.Value(0)
+const scalingInit = new Animated.Value(0) 
 const scaling = scalingInit.interpolate({
   inputRange: [0, 1],
   outputRange: [0, 4]
@@ -108,7 +108,7 @@ function BtoomNav() {
 
     >
 
-      <Tab.Screen name={App_Name} component={WorkSpaceListView} options={{ headerShown: true, ...HeaderBase(App_Name, "dashboard") }} />
+      <Tab.Screen name={App_Name} component={WorkSpaceListView} options={{ headerShown: false, ...HeaderBase(App_Name, "dashboard") }} />
       <Tab.Screen name="Map" component={GoogleMap} options={{ headerShown: false, ...HeaderBase("Map", "map") }} />
       <Tab.Screen name="Settings" component={NavDrawer} options={{ headerShown: false, valueOf, ...HeaderBase("Settings", "settings") }} />
     </Tab.Navigator>
@@ -130,12 +130,12 @@ const CoworkNav = (props) => {
     <Provider>
       <Dialogs />
      
-      <Stack.Navigator >
+      <Stack.Navigator  mode='modal' >
 
         <Stack.Screen name="Login" component={Login} options={{headerShown:false,...HeaderBase("Login")}} />
         <Stack.Screen name="Dashboard" component={BtoomNav} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={Register} options={{ ...HeaderBase("Register") }} />
-        <Stack.Screen name={'Ink'} component={WorkSpaceDetails} options={{ ...HeaderBase(CoWorkStore.name) }} />
+        <Stack.Screen name={'Ink'} component={WorkSpaceDetails} options={{headerShown:false,  ...HeaderBase(CoWorkStore.name) }} />
         <Stack.Screen name="New1" component={Register} options={{ headerShown: false }} />
         <Stack.Screen name="New2" component={Register} options={{ headerShown: false }} />
         <Stack.Screen name="New3" component={Register} options={{ headerShown: false }} />

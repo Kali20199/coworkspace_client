@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import SplashScreen from  "react-native-splash-screen";
 import LightSplashScreen  from './Component/screens/LightSplashScreen';
 import { useStore } from './store/store';
+import Toast,{ErrorToast} from 'react-native-toast-message'
 import   Dialogs from './Component/Widgets/Dialogs'
 import {Provider} from 'react-native-paper'
 const App = () => {
@@ -39,7 +40,7 @@ useEffect(async()=>{
   
       
     <CoworkNav/>
-    
+    <Toast ref={(ref)=>Toast.setRef(ref)} />
     </NavigationContainer> 
     </SafeAreaProvider>
    

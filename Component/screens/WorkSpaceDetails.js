@@ -181,6 +181,7 @@ function WorkSpaceDetails(props) {
           <View>
             <SharedElement id={MainImg}>
               <Image resizeMode='cover' style={style.image} source={{ uri: MainImg }} />
+              {/* <Text>fdsfsdfsdf</Text> */}
             </SharedElement>
           </View>
           {showInfo &&
@@ -251,10 +252,12 @@ function WorkSpaceDetails(props) {
 
 
 
-const style = StyleSheet.create({
+const style =  StyleSheet.create({
 
   cards: {
     shadowColor: 'black',
+    flexDirection:'row',
+    justifyContent:'center',
     shadowOpacity: 0.26,
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 8,
