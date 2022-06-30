@@ -2,6 +2,7 @@ import { makeAutoObservable, reaction, runInAction } from 'mobx'
 import agent from '../agent/agent'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Alert, Platform } from 'react-native';
+import { store } from './store';
 import 'react-native-gesture-handler';
 
 
@@ -23,7 +24,7 @@ export default class UserStore {
 
 
     }
-  
+
     Logged = false
 
     User = null
@@ -141,7 +142,7 @@ export default class UserStore {
     Logout = async (props) => {
         runInAction(async () => {
             this.token = ""
-
+            store.CoWorkStore.clear()
             await AsyncStorage.removeItem(PERSISTENCE_KEY)
             props.navigation.navigate("Login")
         })
@@ -156,10 +157,6 @@ export default class UserStore {
         })
     }
 
-
-    SayHello = async () => {
-        await agent.Account.SayHello()
-    }
 
 
     setLocation = (loc) => {
@@ -206,7 +203,6 @@ export default class UserStore {
         try {
             runInAction(async () => {
                 this.Reservations = reservation
-           
                 await AsyncStorage.setItem(RERSERVATIONS, JSON.stringify(this.Reservations))
             }, [])
         } catch (e) {
@@ -215,14 +211,14 @@ export default class UserStore {
     }
 
 
-    setConfirmation = async(isConfirm)=>{
-   try{
-        runInAction(async()=>{
-            this.Reservations.isConfirmed =isConfirm ?  "True" : "False"
-            await AsyncStorage.setItem(RERSERVATIONS, JSON.stringify(this.Reservations))
-        },[])
-   }catch(e){}
-     
+    setConfirmation = async (isConfirm) => {
+        try {
+            runInAction(async () => {
+                this.Reservations.isConfirmed = isConfirm ? "True" : "False"
+                await AsyncStorage.setItem(RERSERVATIONS, JSON.stringify(this.Reservations))
+            }, [])
+        } catch (e) { }
+
     }
 
     GetReservation = async () => {
@@ -241,8 +237,8 @@ export default class UserStore {
         try {
             runInAction(async () => {
                 this.Reservations = null
-                 await AsyncStorage.removeItem(RERSERVATIONS)
-               
+                await AsyncStorage.removeItem(RERSERVATIONS)
+
             }, [])
 
         } catch (e) {

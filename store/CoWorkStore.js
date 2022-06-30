@@ -94,5 +94,21 @@ export default class CoWorkStore {
  
 }
 
+
+   clear(){
+
+
+    this.name = 'WorkSpace'
+    this.phone = null 
+    this.tables = 0
+    this.city = 'Alexamdria'
+    this.id = null
+    this.imageurl = '' 
+    this.location = undefined
+    this.workSpaces=  undefined
+    this.LightSpaceCard = Array(WorkSpaceCard)
+
+   }
+
  
 }
