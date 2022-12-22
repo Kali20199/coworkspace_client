@@ -1,7 +1,7 @@
 import { HubConnection, HubConnectionBuilder, LogLevel } from "@microsoft/signalr";
 import { makeAutoObservable, runInAction } from "mobx";
 import { Alert, View,Text } from "react-native";
-import { BASEURL } from "../agent/agent";
+import { BASEURL,GOLOBAL } from "../agent/agent";
 import {store} from "./store";
 import Dialogs from '../Component/Widgets/Dialogs'
 

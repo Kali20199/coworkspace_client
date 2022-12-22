@@ -81,8 +81,8 @@ const GoogleMap = (props) => {
             try{
             setCoworkOptions(location.spaceName)
             getSpaceAround()
-            const  {lightSpaceId} = workSpaces.find((element) => element.latitude === location.latitude) 
-            getSpaceByid(lightSpaceId,props)
+            // const  {lightSpaceId} = workSpaces.find((element) => element.latitude === location.latitude) 
+            // getSpaceByid(lightSpaceId,props)
         
          
          

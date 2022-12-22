@@ -5,6 +5,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { store } from "../store/store";
 import Toast, { ErrorToast } from 'react-native-toast-message'
 // 'http://192.168.1.30:5003/api'
+
+export const GOLOBAL = 'http://62.114.239.219'
+ 
 export const BASEURL = 'http://192.168.1.30'
 axios.defaults.baseURL = `${BASEURL}:5003/api`
 
@@ -26,7 +29,7 @@ axios.interceptors.response.use(async (res) => {
     switch (error.response.status) {
         case 401:
             Toast.show({
-                position: 'top',
+                position: 'top', 
                 topOffset: 60,
                 type: 'error',
                 text1: 'UnAuthorized'

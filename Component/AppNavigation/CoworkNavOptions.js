@@ -23,6 +23,7 @@ import { useEffect } from "react";
 import { Provider } from 'react-native-paper'
 import Dialogs from './../Widgets/Dialogs';
 import {createSharedElementStackNavigator } from 'react-navigation-shared-element'
+import PlacesScreen from './../screens/PlacesScreen';
 
 
 enableScreens()
@@ -108,7 +109,7 @@ function BtoomNav() {
 
     >
 
-      <Tab.Screen name={App_Name} component={WorkSpaceListView} options={{ headerShown: false, ...HeaderBase(App_Name, "dashboard") }} />
+      <Tab.Screen name={App_Name} component={PlacesScreen} options={{ headerShown: false, ...HeaderBase(App_Name, "dashboard") }} />
       <Tab.Screen name="Map" component={GoogleMap} options={{ headerShown: false, ...HeaderBase("Map", "map") }} />
       <Tab.Screen name="Settings" component={NavDrawer} options={{ headerShown: false, valueOf, ...HeaderBase("Settings", "settings") }} />
     </Tab.Navigator>
@@ -136,7 +137,7 @@ const CoworkNav = (props) => {
         <Stack.Screen name="Dashboard" component={BtoomNav} options={{ headerShown: false }} />
         <Stack.Screen name="Register" component={Register} options={{ ...HeaderBase("Register") }} />
         <Stack.Screen name={'Ink'} component={WorkSpaceDetails} options={{headerShown:false,  ...HeaderBase(CoWorkStore.name) }} />
-        <Stack.Screen name="New1" component={Register} options={{ headerShown: false }} />
+        <Stack.Screen name="WorkSpaceList" component={WorkSpaceListView} options={{ headerShown: false }} />
         <Stack.Screen name="New2" component={Register} options={{ headerShown: false }} />
         <Stack.Screen name="New3" component={Register} options={{ headerShown: false }} />
         <Stack.Screen name="New4" component={Register} options={{ headerShown: false }} />

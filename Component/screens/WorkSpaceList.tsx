@@ -54,7 +54,10 @@ function WorkSpacemene(props) {
 
 
     useEffect(()=>{
-        setSortedArr(Work)
+      //  setSortedArr(Work)
+        // for(var i=0;i<1000;i++){
+        //     sortArr.push(sortArr[0])
+        // }
     },[])
 
     const ChangeHandler=(event)=>{
